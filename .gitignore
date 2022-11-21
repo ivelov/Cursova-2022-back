@@ -1,6 +1,9 @@
 /node_modules
 /public/hot
 /public/storage
+/public/exports
+/public/zoom.txt
+/public/presentations
 /storage/*.key
 /vendor
 .env

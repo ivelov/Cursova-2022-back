@@ -13,8 +13,12 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
         "laravel/framework": "^7.29",
+        "laravel/nova": "3.*",
+        "laravel/sanctum": "*",
         "laravel/tinker": "^2.5",
-        "laravel/nova": "3.*"
+        "pusher/pusher-php-server": "^7.2",
+        "symfony/http-client": "^6.0",
+        "symfony/mailgun-mailer": "^6.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -39,7 +43,8 @@
         },
         "classmap": [
             "database/seeds",
-            "database/factories"
+            "database/factories",
+            "database/migrations"
         ]
     },
     "autoload-dev": {

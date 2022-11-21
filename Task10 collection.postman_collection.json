@@ -1,0 +1,2761 @@
+{
+	"info": {
+		"_postman_id": "d48f87a1-6245-42e1-a3a4-4eca0679e37e",
+		"name": "Task10 collection",
+		"description": "If request is 'csrf token mismatch' - send get cookie post.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23754643"
+	},
+	"item": [
+		{
+			"name": "Conference",
+			"item": [
+				{
+					"name": "Get Conferences without autorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/conferences/{{page}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"conferences",
+								"{{page}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conferences",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/conferences/{{page}}?reportsCount=-1&startDate=2022-10-01&endDate=2022-11-01&categories[0]=3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"conferences",
+								"{{page}}"
+							],
+							"query": [
+								{
+									"key": "reportsCount",
+									"value": "-1",
+									"description": "-1 for all"
+								},
+								{
+									"key": "startDate",
+									"value": "2022-10-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2022-11-01"
+								},
+								{
+									"key": "categories[0]",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Conferences",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/conferencesFind?searchText=3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"conferencesFind"
+							],
+							"query": [
+								{
+									"key": "searchText",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conference",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/conference/{{conferenceId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"conference",
+								"{{conferenceId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Conference Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/{{conferenceId}}/getCategory",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{conferenceId}}",
+								"getCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Conference",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/conference/{{conferenceId}}/save?title=1&country=uk&latitude=0&longitude=0&date=2022-10-11&time=22:52",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"conference",
+								"{{conferenceId}}",
+								"save"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "1"
+								},
+								{
+									"key": "country",
+									"value": "uk"
+								},
+								{
+									"key": "latitude",
+									"value": "0"
+								},
+								{
+									"key": "longitude",
+									"value": "0"
+								},
+								{
+									"key": "date",
+									"value": "2022-10-11"
+								},
+								{
+									"key": "time",
+									"value": "22:52"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Conference",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/add?title=1&country=uk&latitude=0&longitude=0&date=2022-10-11&time=22:52",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"add"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "1"
+								},
+								{
+									"key": "country",
+									"value": "uk"
+								},
+								{
+									"key": "latitude",
+									"value": "0"
+								},
+								{
+									"key": "longitude",
+									"value": "0"
+								},
+								{
+									"key": "date",
+									"value": "2022-10-11"
+								},
+								{
+									"key": "time",
+									"value": "22:52"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Conference",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/conferences/delete/{{conferenceId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"conferences",
+								"delete",
+								"{{conferenceId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Add Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/reports/add?title=1&startTime=15:00&endTime=16:00&description=aaaaaaaaaaaa vvvvvvvvvvvvv&conf_id=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reports",
+								"add"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "1"
+								},
+								{
+									"key": "startTime",
+									"value": "15:00"
+								},
+								{
+									"key": "endTime",
+									"value": "16:00"
+								},
+								{
+									"key": "description",
+									"value": "aaaaaaaaaaaa vvvvvvvvvvvvv"
+								},
+								{
+									"key": "conf_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/reports/{{reportId}}/save?title=1&startTime=15:00&endTime=16:00&description=aaaaaaaaaaaa vvvvvvvvvvvvv&conf_id=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reports",
+								"{{reportId}}",
+								"save"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "1"
+								},
+								{
+									"key": "startTime",
+									"value": "15:00"
+								},
+								{
+									"key": "endTime",
+									"value": "16:00"
+								},
+								{
+									"key": "description",
+									"value": "aaaaaaaaaaaa vvvvvvvvvvvvv"
+								},
+								{
+									"key": "conf_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/reportsFind?searchText=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reportsFind"
+							],
+							"query": [
+								{
+									"key": "searchText",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/reports/{{page}}?favorites=&startTime=07:00&endTime=18:00&duration=-1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reports",
+								"{{page}}"
+							],
+							"query": [
+								{
+									"key": "favorites",
+									"value": ""
+								},
+								{
+									"key": "categories[0]",
+									"value": "18",
+									"disabled": true
+								},
+								{
+									"key": "startTime",
+									"value": "07:00"
+								},
+								{
+									"key": "endTime",
+									"value": "18:00"
+								},
+								{
+									"key": "duration",
+									"value": "-1",
+									"description": "-1 for all"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Favorite Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/reports/{{page}}?favorites=true&startTime=07:00&endTime=18:00&duration=-1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reports",
+								"{{page}}"
+							],
+							"query": [
+								{
+									"key": "favorites",
+									"value": "true"
+								},
+								{
+									"key": "categories[0]",
+									"value": "18",
+									"disabled": true
+								},
+								{
+									"key": "startTime",
+									"value": "07:00"
+								},
+								{
+									"key": "endTime",
+									"value": "18:00"
+								},
+								{
+									"key": "duration",
+									"value": "-1",
+									"description": "-1 for all"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reports without autorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://ivelov-vm-api.groupbwt.com/reports/{{page}}",
+							"protocol": "http",
+							"host": [
+								"ivelov-vm-api",
+								"groupbwt",
+								"com"
+							],
+							"path": [
+								"reports",
+								"{{page}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/report/{{reportId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"report",
+								"{{reportId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Presentation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/presentation/{{presentationName}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"presentation",
+								"{{presentationName}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Favorite Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/report/{{reportId}}/favorite",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"report",
+								"{{reportId}}",
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unfavorite Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/report/{{reportId}}/unfavorite",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"report",
+								"{{reportId}}",
+								"unfavorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/reports/delete/{{reportId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"reports",
+								"delete",
+								"{{reportId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Get Cookie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    var xsrf = pm.cookies.get('XSRF-TOKEN');\r",
+									"    pm.collectionVariables.set(\"x-srf\", xsrf);\r",
+									"\tpm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/sanctum/csrf-cookie",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sanctum",
+								"csrf-cookie"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/login?email=admin@groupbwt.com&password=12345678",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "admin@groupbwt.com"
+								},
+								{
+									"key": "password",
+									"value": "12345678"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is correct\", function () {\r",
+									"    if(pm.response.status == 200){\r",
+									"        return true;\r",
+									"    }\r",
+									"    return false;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"connection": true,
+							"host": true,
+							"user-agent": true,
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Is Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is correct\", function () {\r",
+									"    if(pm.response.status == 401 || pm.response.status == 200){\r",
+									"        return true;\r",
+									"    }\r",
+									"    return false;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"connection": true,
+							"host": true,
+							"user-agent": true,
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/isAuth",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"isAuth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Account Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is correct\", function () {\r",
+									"    if(pm.response.status == 401 || pm.response.status == 200){\r",
+									"        return true;\r",
+									"    }\r",
+									"    return false;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"connection": true,
+							"host": true,
+							"user-agent": true,
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Favorites Count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is correct\", function () {\r",
+									"    if(pm.response.status == 401 || pm.response.status == 200){\r",
+									"        return true;\r",
+									"    }\r",
+									"    return false;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"connection": true,
+							"host": true,
+							"user-agent": true,
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/account/favorites",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"account",
+								"favorites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is correct\", function () {\r",
+									"    if(pm.response.status == 200){\r",
+									"        return true;\r",
+									"    }\r",
+									"    return false;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"connection": true,
+							"host": true,
+							"user-agent": true,
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/register?firstname=3&lastname=3&password=333333&email=3@3&date=2022-10-10&country=usa&phone=050111111&role=listener",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"register"
+							],
+							"query": [
+								{
+									"key": "firstname",
+									"value": "3"
+								},
+								{
+									"key": "lastname",
+									"value": "3"
+								},
+								{
+									"key": "password",
+									"value": "333333"
+								},
+								{
+									"key": "email",
+									"value": "3@3"
+								},
+								{
+									"key": "date",
+									"value": "2022-10-10"
+								},
+								{
+									"key": "country",
+									"value": "usa"
+								},
+								{
+									"key": "phone",
+									"value": "050111111"
+								},
+								{
+									"key": "role",
+									"value": "listener"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is correct\", function () {\r",
+									"    if(pm.response.status == 200){\r",
+									"        return true;\r",
+									"    }\r",
+									"    return false;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"connection": true,
+							"host": true,
+							"user-agent": true,
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							},
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/account/save?firstname=3&lastname=3&password=333333&email=3@3&date=2022-10-10&country=usa&phone=050111111&currentPassword=12345678",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"account",
+								"save"
+							],
+							"query": [
+								{
+									"key": "firstname",
+									"value": "3"
+								},
+								{
+									"key": "lastname",
+									"value": "3"
+								},
+								{
+									"key": "password",
+									"value": "333333"
+								},
+								{
+									"key": "email",
+									"value": "3@3"
+								},
+								{
+									"key": "date",
+									"value": "2022-10-10"
+								},
+								{
+									"key": "country",
+									"value": "usa"
+								},
+								{
+									"key": "phone",
+									"value": "050111111"
+								},
+								{
+									"key": "currentPassword",
+									"value": "12345678"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Get Comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/report/{{reportId}}/comments/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"report",
+								"{{reportId}}",
+								"comments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/report/{{reportId}}/addComment?text=aaaa aaa&reportId=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"report",
+								"{{reportId}}",
+								"addComment"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "aaaa aaa"
+								},
+								{
+									"key": "reportId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/report/{{reportId}}/updateComment?text=aaaa aaa",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"report",
+								"{{reportId}}",
+								"updateComment"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "aaaa aaa"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Add Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/addCategory?title=aa bb&parentId=",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"addCategory"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "aa bb"
+								},
+								{
+									"key": "parentId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/category/{{categoryId}}/save?title=aa bb",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"{{categoryId}}",
+								"save"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "aa bb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/categories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categories List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/categoriesList",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categoriesList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Child Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/categories/{{categoryId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"categories",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/category/{{categoryId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"{{categoryId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Destroy Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/category/{{categoryId}}/destroy",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"category",
+								"{{categoryId}}",
+								"destroy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exports",
+			"item": [
+				{
+					"name": "Get Channel Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/getChannelId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"getChannelId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Conferences",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/export/conferences",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"export",
+								"conferences"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/export/conference/{{conferenceId}}/reports",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"export",
+								"conference",
+								"{{conferenceId}}",
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Listeners",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/export/conference/{{conferenceId}}/listeners",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"export",
+								"conference",
+								"{{conferenceId}}",
+								"listeners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Export Comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							},
+							{
+								"key": "X-XSRF-TOKEN",
+								"value": "{{x-srf}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/export/report/{{reportId}}/comments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"export",
+								"report",
+								"{{reportId}}",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Zoom",
+			"item": [
+				{
+					"name": "Get Meetings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"\tpm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{domain}}",
+								"type": "text"
+							},
+							{
+								"key": "withCredentials",
+								"value": "true",
+								"type": "text"
+							},
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/meetings/{{page}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"meetings",
+								"{{page}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "categoryId",
+			"value": "1"
+		},
+		{
+			"key": "page",
+			"value": "1"
+		},
+		{
+			"key": "reportId",
+			"value": "3"
+		},
+		{
+			"key": "conferenceId",
+			"value": "1"
+		},
+		{
+			"key": "x-srf",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "domain",
+			"value": "http://ivelov-vm.groupbwt.com",
+			"type": "string"
+		},
+		{
+			"key": "APP_URL",
+			"value": "http://ivelov-vm-api.groupbwt.com",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "http://ivelov-vm-api.groupbwt.com",
+			"type": "string"
+		},
+		{
+			"key": "presentationName",
+			"value": "presentation3.pptx"
+		}
+	]
+}
