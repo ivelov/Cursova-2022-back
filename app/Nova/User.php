@@ -15,14 +15,14 @@ class User extends Resource
      *
      * @var string
      */
-    public static $model = \App\User::class;
+    public static $model = \App\Models\User::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'lastname';
 
     /**
      * The columns that should be searched.
@@ -30,7 +30,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id', 'firstname', 'lastname', 'email',
     ];
 
     /**
@@ -46,7 +46,11 @@ class User extends Resource
 
             Gravatar::make()->maxWidth(50),
 
-            Text::make('Name')
+            Text::make('Firstname')
+                ->sortable()
+                ->rules('required', 'max:255'),
+            
+            Text::make('Lastname')
                 ->sortable()
                 ->rules('required', 'max:255'),
 

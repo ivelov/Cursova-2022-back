@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 //UserController
-Route::post('/login', 'UserController@login');
+Route::get('/login', 'UserController@index');
+Route::post('/login', 'UserController@login')->name('login');
 Route::post('/register', 'UserController@register');
 Route::post('/logout', 'UserController@logout');
 

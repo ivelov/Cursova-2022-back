@@ -262,4 +262,14 @@ class UserController extends Controller
 
         return json_encode($perks);
     }
+
+     /**
+     * Determines user privileges 
+     *
+     * @return Object
+     */
+    public function index()
+    {
+        return view('login');
+    }
 }
