@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 //UserController
-Route::get('/login', 'UserController@index');
+Route::post('/nova/login', 'UserController@loginNova')->name('nova.login');
 Route::post('/login', 'UserController@login')->name('login');
 Route::post('/register', 'UserController@register');
 Route::post('/logout', 'UserController@logout');

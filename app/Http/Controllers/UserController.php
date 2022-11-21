@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -21,7 +22,6 @@ class UserController extends Controller
 
     public function login(LoginRequest $request)
     {
-
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
 
@@ -30,8 +30,18 @@ class UserController extends Controller
         throw ValidationException::withMessages([
             'email' => 'The provided credentials do not match our records.',
         ]);
-        //Auth::login($user);
+    }
 
+    public function loginNova(LoginRequest $request)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'admin'])) {
+            $request->session()->regenerate();
+            Log::info(Auth::user()->role);
+            return redirect('/nova/');
+        }
+        throw ValidationException::withMessages([
+            'email' => 'The provided credentials do not match our records or provided user is not an administrator.',
+        ]);    
     }
 
     public function logout(Request $request)
