@@ -6,11 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Conferences extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'date',
         'time',
@@ -21,4 +16,14 @@ class Conferences extends Model
         'user_id',
         'category_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

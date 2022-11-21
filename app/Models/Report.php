@@ -7,11 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     public $timestamps = false;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
     protected $fillable = [
         'title',
         'start_time',
@@ -23,4 +19,18 @@ class Report extends Model
         'meeting_id',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function conference()
+    {
+        return $this->belongsTo(Conferences::class, 'conf_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
