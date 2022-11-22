@@ -3,9 +3,14 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Bissolli\NovaPhoneField\PhoneNumber;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 
 class User extends Resource
 {
@@ -52,15 +57,41 @@ class User extends Resource
                 ->rules('required', 'max:255'),
 
             Text::make('Email')
-                ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
             Password::make('Password')
                 ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
+                ->creationRules('required', 'string', 'min:6')
+                ->updateRules('nullable', 'string', 'min:6'),
+                
+            Country::make('Country')
+                ->sortable()
+                ->rules('required'),
+            
+            PhoneNumber::make('Phone'),
+
+            Date::make('Birthdate')
+                ->rules('required', 'date', 'before:now')
+                ->resolveUsing(function () {
+                    return $this->birthdate;
+                }),
+
+
+            Select::make('Role')->options([
+                    'listener' => 'Listener',
+                    'announcer' => 'Announcer',
+                    'admin' => 'Admin',
+                ])->rules('required'),
+
+            DateTime::make('Created At')
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+                
+            DateTime::make('Updated At')
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
         ];
     }
 

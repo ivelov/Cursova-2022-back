@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
@@ -48,7 +49,7 @@ class Category extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
                   
-            Number::make('Parent Category Id', 'parent_id')
+            BelongsTo::make('Parent Category', 'parent', Category::class)
                 ->sortable()
                 ->nullable(),
         ];
