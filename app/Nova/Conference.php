@@ -3,6 +3,8 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -54,22 +56,45 @@ class Conference extends Resource
                 ->sortable()
                 ->rules('required'),
 
-            Number::make('latitude')
+            Number::make('Latitude')
                 ->rules('max:90', 'min:-90')
                 ->nullable()
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    if(is_nan(floatval($model->{$attribute}))){
+                        $model->{$attribute} = 0;
+                    }
+                }),
                 
-            Number::make('latitude')
+            Number::make('Longitude')
                 ->rules('max:180', 'min:-180')
                 ->nullable()
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    if(is_nan(floatval($model->{$attribute}))){
+                        $model->{$attribute} = 0;
+                    }
+                }),
             
-            Number::make('User Id')
+            BelongsTo::make('User')
                 ->rules('required'),
     
-            Number::make('Category Id')
+            BelongsTo::make('Category')
                 ->nullable(),
             
+            DateTime::make('Date Time')
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $date = date_create($request->input($attribute));
+                    $model->date = date_format($date, 'Y-m-d');
+                    $model->time = date_format($date, 'H:i:s');
+                    Log::info($model);
+                })->default(function () {
+                    return time()+600;
+                })->rules('required', 'date', 'after:now')
+                ->resolveUsing(function () {
+                    return $this->date . ' ' . $this->time;
+                }),
+
             DateTime::make('Created At')
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
@@ -78,6 +103,11 @@ class Conference extends Resource
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
         ];
+    }
+
+    protected static function afterValidation(NovaRequest $request, $validator)
+    {
+
     }
 
     /**

@@ -20,8 +20,8 @@ class CreateConferencesTable extends Migration
             $table->time('time');
             $table->string('title', 50);
             $table->string('country', 50);
-            $table->double('latitude');
-            $table->double('longitude');
+            $table->double('latitude')->default(0);
+            $table->double('longitude')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
