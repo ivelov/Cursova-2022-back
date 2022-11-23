@@ -31,7 +31,7 @@ class ConferenceController extends Controller
             if ($user->role == 'listener') {
                 $joinedConfIds = Listener::where('user_id', $user->id)->pluck('conference_id')->toArray();
             } else {
-                $joinedConfIds = $reportsAll->where('user_id', $user->id)->pluck('conf_id')->toArray();
+                $joinedConfIds = $reportsAll->where('user_id', $user->id)->pluck('conference_id')->toArray();
             }
         }
 
@@ -40,7 +40,7 @@ class ConferenceController extends Controller
         if (isset($request->reportsCount) && $request->reportsCount != -1) {
             $conferencesToAdd = new Collection();
             foreach ($conferences as $conference) {
-                if ($reportsAll->where('conf_id', $conference->id)->count() ==  $request->reportsCount) {
+                if ($reportsAll->where('conference_id', $conference->id)->count() ==  $request->reportsCount) {
                     $conferencesToAdd->push($conference);
                 }
             }
@@ -178,7 +178,7 @@ class ConferenceController extends Controller
         if ($isListenter) {
             $isParticipant = Listener::where('user_id', $user->id)->where('conference_id', $conference->id)->count() >= 1 ? true : false;
         } else {
-            $isParticipant = Report::select('conf_id')->where('user_id', $user->id)->where('conf_id', $conference->id)->count() >= 1 ? true : false;
+            $isParticipant = Report::select('conference_id')->where('user_id', $user->id)->where('conference_id', $conference->id)->count() >= 1 ? true : false;
         }
 
         return json_encode([
@@ -290,11 +290,11 @@ class ConferenceController extends Controller
     public function getBusyTimes(int $conferenceId, Request $request)
     {
         if (!$request->repId) {
-            $allTimes = Conferences::join('reports', 'conferences.id', '=', 'reports.conf_id')
+            $allTimes = Conferences::join('reports', 'conferences.id', '=', 'reports.conference_id')
                 ->select('reports.start_time', 'reports.end_time')
                 ->where('conferences.id', $conferenceId)->get();
         } else {
-            $allTimes = Conferences::join('reports', 'conferences.id', '=', 'reports.conf_id')
+            $allTimes = Conferences::join('reports', 'conferences.id', '=', 'reports.conference_id')
                 ->select('reports.start_time', 'reports.end_time')
                 ->where('conferences.id', $conferenceId)
                 ->where('reports.id', '<>', $request->repId)->get();

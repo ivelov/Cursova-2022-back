@@ -2,24 +2,29 @@
 
 namespace App\Nova;
 
+use App\Models\Conferences;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Country;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laraning\NovaTimeField\TimeField;
 
-class Conference extends Resource
+class Report extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Conferences::class;
+    public static $model = \App\Models\Report::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -47,66 +52,78 @@ class Conference extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            
+
             Text::make('Title')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Country::make('Country')
-                ->sortable()
-                ->rules('required'),
+            Hidden::make('start_date', function () {
+                if($this->conference){
+                    return  $this->conference->date . ' ' . $this->start_time;
+                }else{
+                    return  date('Y-m-d H:i:s');
+                }
+            }),
 
-            Number::make('Latitude')
-                ->rules('max:90', 'min:-90')
-                ->nullable()
-                ->hideFromIndex()
-                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    if(is_nan(floatval($model->{$attribute}))){
-                        $model->{$attribute} = 0;
-                    }
-                }),
-                
-            Number::make('Longitude')
-                ->rules('max:180', 'min:-180')
-                ->nullable()
-                ->hideFromIndex()
-                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    if(is_nan(floatval($model->{$attribute}))){
-                        $model->{$attribute} = 0;
-                    }
-                }),
+            TimeField::make('Start time')
+                ->sortable()
+                ->rules('required', 'after:now'),
+               
+            TimeField::make('End time')
+                ->sortable()
+                ->rules('required', 'after:start_time'),
             
+            Textarea::make('Description')->nullable(),
+
+            File::make('Presentation')
+                ->acceptedTypes('.pptx,.ppt')
+                ->disk('public')
+                ->path('presentations')
+                ->nullable(),
+
             BelongsTo::make('User')
                 ->rules('required'),
-    
+
+            BelongsTo::make('Conference')
+                ->rules('required'),
+                
             BelongsTo::make('Category')
                 ->nullable(),
-            
-            DateTime::make('Date Time')
-                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    $date = date_create($request->input($attribute));
-                    $model->date = date_format($date, 'Y-m-d');
-                    $model->time = date_format($date, 'H:i:s');
-                })->default(function () {
-                    return time()+600;
-                })->rules('required', 'date', 'after:now')
-                ->resolveUsing(function () {
-                    return $this->date . ' ' . $this->time;
-                }),
 
-            DateTime::make('Created At')
+            Boolean::make('Online', 'is_online'),
+
+            Number::make('Meeting Id')
+                ->nullable()
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
-                
-            DateTime::make('Updated At')
-                ->hideWhenCreating()
-                ->hideWhenUpdating(),
+
         ];
     }
 
     protected static function afterValidation(NovaRequest $request, $validator)
     {
-
+        $conference = Conferences::findOrFail($request->conference);
+        $conferenceStartTime = strtotime($conference->time);
+        $startTime = strtotime($request->start_time);
+        $endTime = strtotime($request->end_time);
+        
+        if($startTime < $conferenceStartTime){
+            $validator->errors()->add(
+                'start_time',
+                'Report start time must be after conference start time'
+            );
+        }
+        if($endTime - $startTime < 300){
+            $validator->errors()->add(
+                'end_time',
+                'Report minimal duration is 5 min.'
+            );
+        } else if($endTime - $startTime > 3600){
+            $validator->errors()->add(
+                'start_time',
+                'Report maximal duration is 60 min.'
+            );
+        }
     }
 
     /**

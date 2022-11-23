@@ -14,7 +14,7 @@ class Report extends Model
         'end_time',
         'description',
         'user_id',
-        'conf_id',
+        'conference_id',
         'category_id',
         'meeting_id',
     ];
@@ -26,7 +26,7 @@ class Report extends Model
 
     public function conference()
     {
-        return $this->belongsTo(Conferences::class, 'conf_id');
+        return $this->belongsTo(Conferences::class);
     }
 
     public function category()

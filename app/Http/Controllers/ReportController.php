@@ -33,7 +33,7 @@ class ReportController extends Controller
                 abort(403);
             }
 
-            $reports = Report::join('conferences', 'conferences.id', '=', 'reports.conf_id')
+            $reports = Report::join('conferences', 'conferences.id', '=', 'reports.conference_id')
                 ->join('favorites', 'favorites.report_id', '=', 'reports.id')
                 ->where('favorites.user_id', $user->id)
                 ->select(
@@ -47,7 +47,7 @@ class ReportController extends Controller
                     'conferences.date'
                 )->get();
         } else {
-            $reports = Report::join('conferences', 'conferences.id', '=', 'reports.conf_id')
+            $reports = Report::join('conferences', 'conferences.id', '=', 'reports.conference_id')
                 ->select(
                     'reports.id',
                     'reports.title',
@@ -185,7 +185,7 @@ class ReportController extends Controller
         }
         if (Report::join('categories', 'categories.id', '=', 'reports.category_id')->where('reports.id', $repId)->get()->count() > 0) {
             $report = Report::join('categories', 'categories.id', '=', 'reports.category_id')
-                ->join('conferences', 'conferences.id', '=', 'reports.conf_id')
+                ->join('conferences', 'conferences.id', '=', 'reports.conference_id')
                 ->select(
                     'reports.id',
                     'reports.title',
@@ -194,14 +194,14 @@ class ReportController extends Controller
                     'description',
                     'presentation',
                     'reports.user_id as userId',
-                    'conf_id as conferenceId',
+                    'conference_id as conferenceId',
                     'reports.category_id as categoryId',
                     'meeting_id as meetingId',
                     'categories.title as categoryTitle',
                     'conferences.date',
                 )->where('reports.id', $repId)->first();
         } else {
-            $report = Report::join('conferences', 'conferences.id', '=', 'reports.conf_id')->select(
+            $report = Report::join('conferences', 'conferences.id', '=', 'reports.conference_id')->select(
                 'reports.id',
                 'reports.title',
                 'start_time as startTime',
@@ -210,7 +210,7 @@ class ReportController extends Controller
                 'presentation',
                 'reports.user_id as userId',
                 'meeting_id as meetingId',
-                'conf_id as conferenceId',
+                'conference_id as conferenceId',
                 'reports.category_id as categoryId',
                 'conferences.date',
             )->where('reports.id', $repId)->first();
@@ -232,7 +232,7 @@ class ReportController extends Controller
                 if ($currTime > $startTime) {
                     //if listener is participant
                     if (Report::where('reports.id', $report->id)
-                        ->join('conferences', 'conferences.id', '=', 'reports.conf_id')
+                        ->join('conferences', 'conferences.id', '=', 'reports.conference_id')
                         ->join('listeners', 'conferences.id', '=', 'listeners.conference_id')
                         ->where('listeners.user_id', $user->id)
                         ->count() > 0
@@ -322,7 +322,7 @@ class ReportController extends Controller
         if (isset($request->reportId)) {
             $report = Report::findOrFail($request->reportId);
         } else {
-            $report = Report::where('conf_id', $confId)->where('user_id', $user->id)->first();
+            $report = Report::where('conference_id', $confId)->where('user_id', $user->id)->first();
         }
 
         $userId = $report->user_id;
@@ -368,14 +368,12 @@ class ReportController extends Controller
                 File::makeDirectory(public_path() . "/presentations");
             }
             if ($request->presentation->move(public_path('presentations'), 'presentation' . $report->id . $request->type)) {
+                Storage::delete($report->presentation);
                 $report->presentation = 'presentation' . $report->id . $request->type;
             }
         }
-
+        
         if ($report->save()) {
-            if ($timeChanged) {
-                MailController::reportTimeChange($user, $reportId, $reportData->conferenceId);
-            }
             return true;
         } else {
             abort(500);
@@ -412,7 +410,7 @@ class ReportController extends Controller
             'end_time' => $reportData->endTime,
             'presentation' => null,
             'user_id' => $user->id,
-            'conf_id' => $reportData->conferenceId,
+            'conference_id' => $reportData->conferenceId,
             'category_id' => isset($reportData->categoryId) ? $reportData->categoryId : null,
             'meeting_id' => $meetingId ? $meetingId : null,
         ]);
@@ -421,16 +419,16 @@ class ReportController extends Controller
         }
 
         if (isset($request->presentation) && $request->presentation) {
-            if (!File::exists(public_path() . "/presentations")) {
-                File::makeDirectory(public_path() . "/presentations");
+            if (!File::exists(public_path() . "/storage/presentations")) {
+                File::makeDirectory(public_path() . "/storage/presentations");
             }
-            if ($request->presentation->move(public_path('presentations'), 'presentation' . $res->id . $request->type)) {
+            if ($request->presentation->move(public_path('storage/presentations'), 'presentation' . $res->id . $request->type)) {
                 $res->presentation = 'presentation' . $res->id . $request->type;
                 $res->save();
             }
         }
 
-        MailController::newAnnouncer($user, $res->id, $res->conf_id);
+        MailController::newAnnouncer($user, $res->id, $res->conference_id);
         return true;
     }
 
@@ -475,7 +473,7 @@ class ReportController extends Controller
     public function search(Request $request)
     {
         $reports = Report::select('reports.id', 'reports.title')
-            ->join('conferences', 'conferences.id', '=', 'reports.conf_id')
+            ->join('conferences', 'conferences.id', '=', 'reports.conference_id')
             ->where('conferences.date', '>=', date('Y-m-d'))
             ->where('end_time', '>=', date('H:i:s', time() + env('TIMEZONE_DIFF_SECONDS', 0)))
             ->where('reports.title', 'like', '%' . $request->searchText . '%')

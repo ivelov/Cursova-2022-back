@@ -20,11 +20,12 @@ class CreateReportsTable extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->text('description')->nullable(); 
+            $table->boolean('is_online')->default(false); 
             $table->string('presentation')->nullable(); 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('conf_id');
-            $table->foreign('conf_id')->references('id')->on('conferences')->onDelete('cascade');
+            $table->unsignedBigInteger('conference_id');
+            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('meeting_id')->nullable();
             //$table->timestamps();

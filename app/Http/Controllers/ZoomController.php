@@ -35,7 +35,6 @@ class ZoomController extends Controller
 			"grant_type" => "account_credentials",
 			"account_id" => env('ZOOM_ACCOUNT_ID'),
 		];
-
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => "https://zoom.us/oauth/token",
 			CURLOPT_POSTFIELDS => http_build_query($data),
@@ -48,8 +47,8 @@ class ZoomController extends Controller
 				"X-Requested-With: XMLHttpRequest",
 			),
 		));
-
-		$response = json_decode(curl_exec($curl));
+		$responseStr = curl_exec($curl);
+		$response = json_decode($responseStr);
 		$err = curl_error($curl);
 		curl_close($curl);
 
@@ -58,6 +57,7 @@ class ZoomController extends Controller
 			abort(500);
 		} else {
 			if (!isset($response->access_token)) {
+				Log::info($responseStr);
 				abort(500);
 			}
 			$file = fopen($filename, 'w');
@@ -97,7 +97,8 @@ class ZoomController extends Controller
 			),
 		));
 
-		$response = curl_exec($curl);
+		$responseStr = curl_exec($curl);
+		$response = json_decode($responseStr);
 		$err = curl_error($curl);
 		curl_close($curl);
 		if ($err) {
@@ -106,6 +107,7 @@ class ZoomController extends Controller
 		} else {
 			$response = json_decode($response);
 			if (!isset($response->id)) {
+				Log::info($responseStr);
 				abort(500);
 			}
 			return $response->id;

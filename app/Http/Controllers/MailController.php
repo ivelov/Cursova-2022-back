@@ -26,7 +26,7 @@ class MailController extends Controller
      */
     public static function newListener(\Illuminate\Contracts\Auth\Authenticatable $user, int $conferenceId)
     {
-        $announcers = Conferences::join('reports', 'conferences.id', '=', 'reports.conf_id')
+        $announcers = Conferences::join('reports', 'conferences.id', '=', 'reports.conference_id')
             ->join('users', 'users.id', '=', 'reports.user_id')
             ->where('users.role', 'announcer')
             ->where('conferences.id', $conferenceId)
@@ -63,7 +63,7 @@ class MailController extends Controller
      */
     public static function newAnnouncer(\Illuminate\Contracts\Auth\Authenticatable $user, int $reportId, int $conferenceId)
     {
-        $listeners = Report::join('listeners', 'reports.conf_id', '=', 'listeners.conference_id')
+        $listeners = Report::join('listeners', 'reports.conference_id', '=', 'listeners.conference_id')
             ->join('users', 'users.id', '=', 'listeners.user_id')
             ->where('reports.id', $reportId)
             ->select('users.email', 'users.role', 'reports.title', 'reports.start_time', 'reports.end_time')
@@ -103,7 +103,7 @@ class MailController extends Controller
      */
     public static function reportTimeChange(\Illuminate\Contracts\Auth\Authenticatable $user, int $reportId, int $conferenceId)
     {
-        $listeners = Report::join('listeners', 'reports.conf_id', '=', 'listeners.conference_id')
+        $listeners = Report::join('listeners', 'reports.conference_id', '=', 'listeners.conference_id')
             ->join('users', 'users.id', '=', 'listeners.user_id')
             ->where('reports.id', $reportId)
             ->select('users.email', 'users.role', 'reports.title', 'reports.start_time', 'reports.end_time')
@@ -170,18 +170,18 @@ class MailController extends Controller
     {
         $announcer = Report::join('users', 'users.id', '=', 'reports.user_id')
             ->where('reports.id', $reportId)
-            ->select('users.email', 'users.role', 'reports.title AS reportTitle', 'reports.conf_id')
+            ->select('users.email', 'users.role', 'reports.title AS reportTitle', 'reports.conference_id')
             ->first();
 
         if ($announcer->count() ===  null) {
             return;
         }
 
-        $conference = Conferences::findOrFail($announcer->conf_id);
+        $conference = Conferences::findOrFail($announcer->conference_id);
         $mailData = [
             'userName' => $user->firstname,
             'conferenceTitle' => $conference->title,
-            'conferenceLink' => env('FRONT_URL', 'http://127.0.0.1:8080') . '/conference/' . $announcer->conf_id,
+            'conferenceLink' => env('FRONT_URL', 'http://127.0.0.1:8080') . '/conference/' . $announcer->conference_id,
             'reportLink' => env('FRONT_URL', 'http://127.0.0.1:8080') . '/report/' . $reportId,
             'reportTitle' => $announcer->reportTitle,
         ];
@@ -202,7 +202,7 @@ class MailController extends Controller
      */
     public static function conferenceDeleted(int $conferenceId)
     {
-        $recievers = Conferences::join('reports', 'conferences.id', '=', 'reports.conf_id')
+        $recievers = Conferences::join('reports', 'conferences.id', '=', 'reports.conference_id')
             ->join('users', 'users.id', '=', 'reports.user_id')
             ->where('conferences.id', $conferenceId)
             ->where('users.role', '<>', 'admin')
