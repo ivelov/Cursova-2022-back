@@ -364,10 +364,10 @@ class ReportController extends Controller
         $report->end_time = $reportData->endTime;
         $report->category_id = isset($reportData->categoryId) ? $reportData->categoryId : $report->category_id;
         if (isset($request->presentation) && $request->presentation) {
-            if (!File::exists(public_path() . "/presentations")) {
-                File::makeDirectory(public_path() . "/presentations");
+            if (!File::exists(storage_path() . "/app/public/presentations")) {
+                File::makeDirectory(storage_path() . "/app/public/presentations");
             }
-            if ($request->presentation->move(public_path('presentations'), 'presentation' . $report->id . $request->type)) {
+            if ($request->presentation->move(storage_path('/app/public/presentations/'), 'presentation' . $report->id . $request->type)) {
                 Storage::delete($report->presentation);
                 $report->presentation = 'presentation' . $report->id . $request->type;
             }
@@ -419,10 +419,10 @@ class ReportController extends Controller
         }
 
         if (isset($request->presentation) && $request->presentation) {
-            if (!File::exists(public_path() . "/storage/presentations")) {
-                File::makeDirectory(public_path() . "/storage/presentations");
+            if (!File::exists(storage_path() . "/app/public/presentations")) {
+                File::makeDirectory(storage_path() . "/app/public/presentations");
             }
-            if ($request->presentation->move(public_path('storage/presentations'), 'presentation' . $res->id . $request->type)) {
+            if ($request->presentation->move(storage_path('/app/public/presentations/'), 'presentation' . $res->id . $request->type)) {
                 $res->presentation = 'presentation' . $res->id . $request->type;
                 $res->save();
             }
@@ -491,6 +491,6 @@ class ReportController extends Controller
      */
     public function downloadPresentation($presentationName)
     {
-        return Storage::download('presentations/' . $presentationName);
+        return Storage::disk('public')->download('presentations/' . $presentationName);
     }
 }

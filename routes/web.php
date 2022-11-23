@@ -53,7 +53,7 @@ Route::post('/report/{id}/unfavorite', 'ReportController@unfavorite');
 
 Route::post('/reportsFind', 'ReportController@search');
 
-Route::get('/presentation/{name}', 'ReportController@downloadPresentation');
+Route::get('/presentations/{name}', 'ReportController@downloadPresentation');
 
 
 //CommentController
