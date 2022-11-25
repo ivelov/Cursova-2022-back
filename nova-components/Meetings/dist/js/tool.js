@@ -79,6 +79,10 @@ Nova.booting(function (Vue, router, store) {
   router.addRoutes([{
     name: 'meetings',
     path: '/meetings',
+    redirect: '/meetings/1'
+  }, {
+    name: 'meetings-page',
+    path: '/meetings/:page',
     component: __webpack_require__(2)
   }]);
 });
@@ -169,7 +173,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* Scoped Styles */\r\n", ""]);
+exports.push([module.i, "\n.nav-btns{\r\n    -webkit-box-pack: justify;\r\n        -ms-flex-pack: justify;\r\n            justify-content: space-between;\n}\n.meetings-div{\r\n    min-height: 50px;\r\n    max-width: 100%;\r\n    overflow-x: auto;\n}\n.progress {\r\n  position: fixed;\r\n  top: 0px;\r\n  left: 0px;\r\n  right: 0px;\r\n  height: 2px;\r\n  width: 0%;\r\n  -webkit-transition: width 0.2s, opacity 0.4s;\r\n  transition: width 0.2s, opacity 0.4s;\r\n  opacity: 1;\r\n  background-color: #efc14e;\r\n  z-index: 999999;\n}\r\n", ""]);
 
 // exports
 
@@ -667,6 +671,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     metaInfo: function metaInfo() {
@@ -674,8 +743,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             title: 'Meetings'
         };
     },
+
+    data: function data() {
+        return {
+            pageInfo: {
+                meetings: {},
+                maxPage: 1
+            },
+            loading: false,
+            page: 1
+        };
+    },
+    computed: {
+        hasMorePages: function hasMorePages() {
+            return this.page < this.pageInfo.maxPage;
+        },
+        hasPreviousPages: function hasPreviousPages() {
+            return this.page > 1;
+        }
+    },
     mounted: function mounted() {
-        //
+        var _this = this;
+
+        this.loading = true;
+        this.page = this.$route.params.page;
+        axios.get("http://127.0.0.1:8000/meetings/" + this.page).then(function (response) {
+            console.log(response.data);
+            _this.pageInfo = response.data;
+        }).finally(function () {
+            _this.loading = false;
+        });
+    },
+
+    methods: {
+        nextPage: function nextPage() {
+            var _this2 = this;
+
+            this.page = parseInt(this.page) + 1;
+            this.loading = true;
+            axios.get("http://127.0.0.1:8000/meetings/" + this.page).then(function (response) {
+                _this2.pageInfo = response.data;
+            }).finally(function () {
+                _this2.loading = false;
+            });
+            this.$router.push("/meetings/" + this.page);
+        },
+        prevPage: function prevPage() {
+            var _this3 = this;
+
+            this.page = parseInt(this.page) - 1;
+            this.loading = true;
+            axios.get("http://127.0.0.1:8000/meetings/" + this.page).then(function (response) {
+                _this3.pageInfo = response.data;
+            }).finally(function () {
+                _this3.loading = false;
+            });
+            this.$router.push("/meetings/" + this.page);
+        }
     }
 });
 
@@ -695,57 +819,159 @@ var render = function() {
       _c(
         "card",
         {
-          staticClass: "bg-90 flex flex-col items-center justify-center",
-          staticStyle: { "min-height": "300px" }
+          staticClass: "flex flex-col meetings-div",
+          class: _vm.pageInfo.meetings.length > 0 ? "" : "justify-center"
         },
         [
-          _c(
-            "svg",
-            {
-              staticClass: "spin fill-80 mb-6",
-              attrs: {
-                width: "69",
-                height: "72",
-                viewBox: "0 0 23 24",
-                xmlns: "http://www.w3.org/2000/svg"
-              }
-            },
-            [
-              _c("path", {
-                attrs: {
-                  d:
-                    "M20.12 20.455A12.184 12.184 0 0 1 11.5 24a12.18 12.18 0 0 1-9.333-4.319c4.772 3.933 11.88 3.687 16.36-.738a7.571 7.571 0 0 0 0-10.8c-3.018-2.982-7.912-2.982-10.931 0a3.245 3.245 0 0 0 0 4.628 3.342 3.342 0 0 0 4.685 0 1.114 1.114 0 0 1 1.561 0 1.082 1.082 0 0 1 0 1.543 5.57 5.57 0 0 1-7.808 0 5.408 5.408 0 0 1 0-7.714c3.881-3.834 10.174-3.834 14.055 0a9.734 9.734 0 0 1 .03 13.855zM4.472 5.057a7.571 7.571 0 0 0 0 10.8c3.018 2.982 7.912 2.982 10.931 0a3.245 3.245 0 0 0 0-4.628 3.342 3.342 0 0 0-4.685 0 1.114 1.114 0 0 1-1.561 0 1.082 1.082 0 0 1 0-1.543 5.57 5.57 0 0 1 7.808 0 5.408 5.408 0 0 1 0 7.714c-3.881 3.834-10.174 3.834-14.055 0a9.734 9.734 0 0 1-.015-13.87C5.096 1.35 8.138 0 11.5 0c3.75 0 7.105 1.68 9.333 4.319C16.06.386 8.953.632 4.473 5.057z",
-                  "fill-rule": "evenodd"
+          _vm.loading
+            ? _c("div", {
+                staticClass: "progress",
+                style: {
+                  width: "50%",
+                  height: "3px",
+                  opacity: 1,
+                  "background-color": "var(--primary)"
                 }
               })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "h1",
-            { staticClass: "text-white text-4xl text-90 font-light mb-6" },
-            [_vm._v("\n            We're in a black hole.\n        ")]
-          ),
-          _vm._v(" "),
-          _c("p", { staticClass: "text-white-50% text-lg" }, [
-            _vm._v(
-              "\n            You can edit this tool's component at:\n            "
-            ),
+            : (_vm.pageInfo.meetings
+              ? Object.keys(_vm.pageInfo.meetings).length != 0
+              : false)
+            ? _c(
+                "table",
+                {
+                  staticClass: "table w-full",
+                  attrs: { cellpadding: "0", cellspacing: "0" }
+                },
+                [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", [_vm._v("№")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("uuid")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("id")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("host_id")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("topic/report_title")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("type")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("start_time")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("timezone")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("created_at")]),
+                      _vm._v(" "),
+                      _c("th", [_vm._v("join_url")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.pageInfo.meetings, function(meeting, index) {
+                      return _c(
+                        "tr",
+                        { key: meeting.id, staticClass: "meeting-row" },
+                        [
+                          _c("td", [_vm._v(_vm._s(meeting.uuid))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.host_id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.topic))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.type))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.start_time))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.timezone))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.created_at))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(meeting.join_url))])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ]
+              )
+            : _c("div", { staticClass: "text-center flex justify-center" }, [
+                _vm._v("\n        No results\n    ")
+              ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "bg-20 rounded-b-lg" }, [
+        _c(
+          "nav",
+          { staticClass: "flex nav-btns" },
+          [
             _c(
-              "code",
+              "button",
               {
                 staticClass:
-                  "ml-1 border border-80 text-sm font-mono text-white bg-black rounded px-2 py-1"
+                  "font-mono btn btn-link h-9 min-w-9 px-2 border-r border-50",
+                class: {
+                  "text-primary dim": _vm.hasPreviousPages,
+                  "text-80 opacity-50": !_vm.hasPreviousPages || _vm.loading
+                },
+                attrs: {
+                  disabled: !_vm.hasPreviousPages || _vm.loading,
+                  rel: "prev",
+                  dusk: "previous"
+                },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.prevPage()
+                  }
+                }
               },
-              [
-                _vm._v(
-                  "\n                /nova-components/Meetings/resources/js/components/Tool.vue\n            "
-                )
-              ]
-            )
-          ])
-        ]
-      )
+              [_vm._v("\n            ‹\n            ")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex items-center" }, [
+              _vm._v(
+                "\n                Page " +
+                  _vm._s(_vm.page) +
+                  " of " +
+                  _vm._s(_vm.pageInfo.maxPage) +
+                  "\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "font-mono btn btn-link h-9 min-w-9 px-2 border-r border-50",
+                class: {
+                  "text-primary dim": _vm.hasMorePages,
+                  "text-80 opacity-50": !_vm.hasMorePages || _vm.loading
+                },
+                attrs: {
+                  disabled: !_vm.hasMorePages || _vm.loading,
+                  rel: "next",
+                  dusk: "next"
+                },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.nextPage()
+                  }
+                }
+              },
+              [_vm._v("\n            ›\n            ")]
+            ),
+            _vm._v(" "),
+            _vm._t("default")
+          ],
+          2
+        )
+      ])
     ],
     1
   )

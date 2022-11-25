@@ -81,4 +81,4 @@ Route::post('/export/report/{id}/comments', 'ExportController@exportComments');
 
 
 //ZoomController
-Route::get('/meetings/{page}', 'ZoomController@index');
+Route::get('/meetings/{page?}', 'ZoomController@index');
