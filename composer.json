@@ -20,7 +20,8 @@
         "laravel/tinker": "^2.5",
         "pusher/pusher-php-server": "^7.2",
         "symfony/http-client": "^6.0",
-        "symfony/mailgun-mailer": "^6.0"
+        "symfony/mailgun-mailer": "^6.0",
+        "ivelovvm/meetings": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -71,7 +72,11 @@
     "repositories": [
         {
             "type": "vcs",
-            "url":  "git@gitlab.groupbwt.com:root/laravel-nova.git"
+            "url": "git@gitlab.groupbwt.com:root/laravel-nova.git"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Meetings"
         }
     ]
 }

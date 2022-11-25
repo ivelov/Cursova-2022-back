@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39b394cc595507e5e88b30620606a379",
+    "content-hash": "bdd8a92c43dd8d9040631d332e403b22",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1399,6 +1399,42 @@
                 }
             ],
             "time": "2022-10-26T14:07:24+00:00"
+        },
+        {
+            "name": "ivelovvm/meetings",
+            "version": "dev-node11",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/Meetings",
+                "reference": "3060d700df9f83eae04653d49e3d6522fe673aad"
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ivelovvm\\Meetings\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ivelovvm\\Meetings\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "laraning/nova-time-field",
