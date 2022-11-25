@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ReportObserver
 {
@@ -23,6 +24,9 @@ class ReportObserver
     {
         if(isset($report->meeting_id)){
             ZoomController::deleteMeeting($report->meeting_id);
+        }
+        if(isset($report->presentation)){
+            Storage::disk('public')->delete('presentations/' . $report->presentation);
         }
     }
 
