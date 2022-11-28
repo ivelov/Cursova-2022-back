@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
@@ -369,7 +370,7 @@ class ReportController extends Controller
             }
             if ($request->presentation->move(storage_path('/app/public/presentations/'), 'presentation' . $report->id . $request->type)) {
                 Storage::delete($report->presentation);
-                $report->presentation = 'presentation' . $report->id . $request->type;
+                $report->presentation = 'presentations/presentation' . $report->id . $request->type;
             }
         }
         
@@ -423,7 +424,7 @@ class ReportController extends Controller
                 File::makeDirectory(storage_path() . "/app/public/presentations");
             }
             if ($request->presentation->move(storage_path('/app/public/presentations/'), 'presentation' . $res->id . $request->type)) {
-                $res->presentation = 'presentation' . $res->id . $request->type;
+                $res->presentation = 'presentations/presentation' . $res->id . $request->type;
                 $res->save();
             }
         }
@@ -491,6 +492,7 @@ class ReportController extends Controller
      */
     public function downloadPresentation($presentationName)
     {
-        return Storage::disk('public')->download('presentations/' . $presentationName);
+        ob_end_clean();
+        return response()->download(storage_path() . "/app/public/presentations/".$presentationName);
     }
 }
