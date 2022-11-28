@@ -24,7 +24,6 @@
         >
         <thead>
           <tr>
-            <th>№</th>
             <th>uuid</th>
             <th>id</th>
             <th>host_id</th>
@@ -125,7 +124,6 @@ export default {
         this.loading = true;
         this.page =  this.$route.params.page;
         axios.get("http://127.0.0.1:8000/meetings/"+this.page).then((response) => {
-            console.log(response.data);
             this.pageInfo = response.data;
         }).finally(() => {
             this.loading = false;

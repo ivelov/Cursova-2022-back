@@ -13,6 +13,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
+        "ivelovvm/meetings": "*",
         "laraning/nova-time-field": "^1.2",
         "laravel/framework": "^7.29",
         "laravel/nova": "3.*",
@@ -21,7 +22,8 @@
         "pusher/pusher-php-server": "^7.2",
         "symfony/http-client": "^6.0",
         "symfony/mailgun-mailer": "^6.0",
-        "ivelovvm/meetings": "*"
+        "whitecube/nova-google-maps": "^0.0.1",
+        "ivelovvm/gmap": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -77,6 +79,10 @@
         {
             "type": "path",
             "url": "./nova-components/Meetings"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Gmap"
         }
     ]
 }

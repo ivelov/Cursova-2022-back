@@ -9,7 +9,9 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js",
         "build-meetings": "cd nova-components/Meetings && npm run dev",
-        "build-meetings-prod": "cd nova-components/Meetings && npm run prod"
+        "build-meetings-prod": "cd nova-components/Meetings && npm run prod",
+        "build-gmap": "cd nova-components/Gmap && npm run dev",
+        "build-gmap-prod": "cd nova-components/Gmap && npm run prod"
     },
     "devDependencies": {
         "axios": "^0.19",

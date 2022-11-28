@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 //UserController
+Route::get('/', 'UserController@redirectToNova');
 Route::post('/nova/login', 'UserController@loginNova')->name('nova.login');
 Route::post('/login', 'UserController@login')->name('login');
 Route::post('/register', 'UserController@register');

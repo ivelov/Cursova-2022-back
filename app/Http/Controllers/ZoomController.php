@@ -253,7 +253,7 @@ class ZoomController extends Controller
 			curl_close($curl);
 			return $meetings;
 		});
-		$meetings = new LengthAwarePaginator($meetings->forPage($page, 1), $meetings->count(), 1, $page);
+		$meetings = new LengthAwarePaginator($meetings->forPage($page, 15), $meetings->count(), 15, $page);
 
 		$meetingsArray = [];
 		foreach ($meetings as $key => $meeting) {

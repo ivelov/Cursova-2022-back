@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+
+    public function redirectToNova()
+    {
+        return redirect('/nova');
+    }
+
     public function authSanctum(Request $request)
     {
         return $request->user();

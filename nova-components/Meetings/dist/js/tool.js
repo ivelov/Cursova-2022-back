@@ -735,7 +735,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     metaInfo: function metaInfo() {
@@ -768,7 +767,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.loading = true;
         this.page = this.$route.params.page;
         axios.get("http://127.0.0.1:8000/meetings/" + this.page).then(function (response) {
-            console.log(response.data);
             _this.pageInfo = response.data;
         }).finally(function () {
             _this.loading = false;
@@ -845,8 +843,6 @@ var render = function() {
                 [
                   _c("thead", [
                     _c("tr", [
-                      _c("th", [_vm._v("№")]),
-                      _vm._v(" "),
                       _c("th", [_vm._v("uuid")]),
                       _vm._v(" "),
                       _c("th", [_vm._v("id")]),

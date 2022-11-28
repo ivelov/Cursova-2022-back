@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdd8a92c43dd8d9040631d332e403b22",
+    "content-hash": "3f79d573ca3beb12f1a2f2342fe38def",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1399,6 +1399,42 @@
                 }
             ],
             "time": "2022-10-26T14:07:24+00:00"
+        },
+        {
+            "name": "ivelovvm/gmap",
+            "version": "dev-node11",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/Gmap",
+                "reference": "3606b7e1a4d28ddabb23af74b34248fe81d8c0ca"
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ivelovvm\\Gmap\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ivelovvm\\Gmap\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "ivelovvm/meetings",
@@ -6634,6 +6670,51 @@
                 }
             ],
             "time": "2022-01-24T18:55:24+00:00"
+        },
+        {
+            "name": "whitecube/nova-google-maps",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/whitecube/nova-google-maps.git",
+                "reference": "1761cb462b528d0c94bc15c9ef5747ce8ae2d114"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/whitecube/nova-google-maps/zipball/1761cb462b528d0c94bc15c9ef5747ce8ae2d114",
+                "reference": "1761cb462b528d0c94bc15c9ef5747ce8ae2d114",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Whitecube\\NovaGoogleMaps\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Whitecube\\NovaGoogleMaps\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/whitecube/nova-google-maps/issues",
+                "source": "https://github.com/whitecube/nova-google-maps/tree/v0.0.1"
+            },
+            "time": "2020-05-04T14:32:00+00:00"
         }
     ],
     "packages-dev": [
