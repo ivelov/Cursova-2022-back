@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Models\Conferences;
 use App\Models\Report as ModelsReport;
+use App\Nova\Actions\UpdateZoomMeeting;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -261,6 +262,8 @@ class Report extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new UpdateZoomMeeting
+        ];
     }
 }

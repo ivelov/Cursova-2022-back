@@ -351,14 +351,6 @@ class ReportController extends Controller
         $report = Report::findOrFail($reportId);
         $reportData = json_decode($request->report);
 
-        $timeChanged = false;
-        if (
-            substr($report->start_time, 0, 5) != $reportData->startTime
-            || substr($report->end_time, 0, 5) != $reportData->endTime
-        ) {
-            $timeChanged = true;
-        }
-
         $report->title = $reportData->title;
         $report->description = isset($reportData->description) ? $reportData->description : $report->description;
         $report->start_time = $reportData->startTime;

@@ -105,7 +105,6 @@ class ZoomController extends Controller
 			Log::info("cURL Error #:" . $err);
 			abort(500);
 		} else {
-			$response = json_decode($response);
 			if (!isset($response->id)) {
 				Log::info($responseStr);
 				abort(500);

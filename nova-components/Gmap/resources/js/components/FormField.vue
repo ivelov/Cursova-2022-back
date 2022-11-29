@@ -7,6 +7,7 @@
         <template slot="field">
             <input
                 type="number"
+                step="any"
                 class="input form-control form-input form-input-bordered w-full"
                 max="90"
                 min="-90"
@@ -15,6 +16,7 @@
             />
             <input
                 type="number"
+                step="any"
                 class="input form-control form-input form-input-bordered w-full mt-2"
                 max="180"
                 min="-180"
