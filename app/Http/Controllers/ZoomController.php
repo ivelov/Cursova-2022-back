@@ -204,9 +204,7 @@ class ZoomController extends Controller
 				),
 			));
 
-			$response = curl_exec($curl);
-			Log::info($response);
-			$response = json_decode($response);
+			$response = json_decode(curl_exec($curl));
 			$err = curl_error($curl);
 
 			if ($err) {

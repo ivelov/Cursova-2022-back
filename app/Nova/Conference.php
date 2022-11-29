@@ -91,11 +91,6 @@ class Conference extends Resource
         ];
     }
 
-    protected static function afterValidation(NovaRequest $request, $validator)
-    {
-        Log::info($request);
-    }
-
     /**
      * Get the cards available for the request.
      *
