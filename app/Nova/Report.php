@@ -98,7 +98,10 @@ class Report extends Resource
 
             Number::make('Meeting Id')
                 ->hideWhenCreating()
-                ->hideWhenUpdating(),
+                ->hideWhenUpdating()
+                ->showOnDetail(function (NovaRequest $request, $resource) {
+                    return $this->meeting_id ? true : false;
+                }),
 
             TextCopy::make('Join url', function(){
                     if($this->meeting_id){
@@ -107,6 +110,9 @@ class Report extends Resource
                         return null;
                     }
                 })->onlyOnDetail()
+                ->showOnDetail(function (NovaRequest $request, $resource) {
+                    return $this->meeting_id ? true : false;
+                })
                 ->truncate(50),
 
             TextCopy::make('Start url', function(){
@@ -116,6 +122,9 @@ class Report extends Resource
                         return null;
                     }
                 })->onlyOnDetail()
+                ->showOnDetail(function (NovaRequest $request, $resource) {
+                    return $this->meeting_id ? true : false;
+                })
                 ->truncate(50),
         ];
     }
