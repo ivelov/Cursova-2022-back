@@ -2,9 +2,11 @@
 
 namespace App\Nova;
 
+use App\Models\Category as ModelsCategory;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 
 class Category extends Resource
@@ -50,7 +52,28 @@ class Category extends Resource
             BelongsTo::make('Parent Category', 'parent', Category::class)
                 ->sortable()
                 ->nullable(),
+
+            Number::make('Children count', function ()
+            {
+                return $this->childrenCount(ModelsCategory::select('id','parent_id')->get(), $this->id);
+            }),
         ];
+    }
+
+     /**
+     * Get count of all children categories
+     *
+     * @param Collection &$allCategories array of all categories
+     * @param int $parentId id of parent category
+     * @return int
+     */
+    protected function childrenCount($allCategories, $parentId){
+        $count = 0;
+        $childrenCategories = $allCategories->where('parent_id', $parentId);
+        foreach ($childrenCategories as $category) {
+            $count += 1 + $this->childrenCount($allCategories, $category->id);
+        }
+        return $count;
     }
 
     /**

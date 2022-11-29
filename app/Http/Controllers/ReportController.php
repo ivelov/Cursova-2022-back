@@ -488,7 +488,7 @@ class ReportController extends Controller
     /**
      * Download presentation by name
      *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function downloadPresentation($presentationName)
     {
