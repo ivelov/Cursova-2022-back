@@ -11,7 +11,9 @@
         "build-meetings": "cd nova-components/Meetings && npm run dev",
         "build-meetings-prod": "cd nova-components/Meetings && npm run prod",
         "build-gmap": "cd nova-components/Gmap && npm run dev",
-        "build-gmap-prod": "cd nova-components/Gmap && npm run prod"
+        "build-gmap-prod": "cd nova-components/Gmap && npm run prod",
+        "build-text-copy": "cd nova-components/TextCopy && npm run dev",
+        "build-text-copy-prod": "cd nova-components/TextCopy && npm run prod"
     },
     "devDependencies": {
         "axios": "^0.19",

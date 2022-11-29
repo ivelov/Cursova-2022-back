@@ -2,10 +2,10 @@
 
 namespace App\Nova;
 
+use App\Http\Controllers\ZoomController;
 use App\Models\Conferences;
 use App\Models\Report as ModelsReport;
 use App\Nova\Actions\UpdateZoomMeeting;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Fields\BelongsTo;
@@ -18,6 +18,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laraning\NovaTimeField\TimeField;
+use Sixlive\TextCopy\TextCopy;
 
 class Report extends Resource
 {
@@ -96,10 +97,26 @@ class Report extends Resource
             Boolean::make('Online', 'is_online'),
 
             Number::make('Meeting Id')
-                ->nullable()
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
 
+            TextCopy::make('Join url', function(){
+                    if($this->meeting_id){
+                        return ZoomController::getMeetingInfo($this->meeting_id)['join_url'];
+                    }else{
+                        return null;
+                    }
+                })->onlyOnDetail()
+                ->truncate(50),
+
+            TextCopy::make('Start url', function(){
+                    if($this->meeting_id){
+                        return ZoomController::getMeetingInfo($this->meeting_id)['start_url'];
+                    }else{
+                        return null;
+                    }
+                })->onlyOnDetail()
+                ->truncate(50),
         ];
     }
 

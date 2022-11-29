@@ -120,6 +120,9 @@ class ZoomController extends Controller
 	 */
 	public static function getMeetingInfo(int $meetingId)
 	{
+		if($meetingId == null){
+			return null;
+		}
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => "https://api.zoom.us/v2/meetings/" . $meetingId,
@@ -141,7 +144,14 @@ class ZoomController extends Controller
 			Log::info("cURL Error #:" . $err);
 			abort(500);
 		} else {
-			return json_decode($response);
+			$response = json_decode($response, true);
+			if(array_key_exists('id', $response)){
+				return $response;
+			}else{
+				Log::info($response);
+				abort(500);
+			}
+				
 		}
 	}
 
