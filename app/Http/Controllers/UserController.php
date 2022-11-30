@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+
+    public function redirectToNova()
+    {
+        return redirect('/nova');
+    }
+
     public function authSanctum(Request $request)
     {
         return $request->user();
@@ -22,11 +28,13 @@ class UserController extends Controller
 
     public function login(LoginRequest $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $request->session()->regenerate();
-
-            return true;
-        }
+        //if(User::where('email', $request->email)->first()->role != 'admin'){ //deny for admins
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $request->session()->regenerate();
+    
+                return true;
+            }
+        //}
         throw ValidationException::withMessages([
             'email' => 'The provided credentials do not match our records.',
         ]);

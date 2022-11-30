@@ -26,7 +26,8 @@ class ReportObserver
             ZoomController::deleteMeeting($report->meeting_id);
         }
         if(isset($report->presentation)){
-            Storage::disk('public')->delete('presentations/' . $report->presentation);
+            Log::info('Trying to delete presentation');
+            Storage::disk('public')->delete($report->presentation);
         }
     }
 

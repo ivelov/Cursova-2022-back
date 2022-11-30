@@ -105,7 +105,6 @@ class ZoomController extends Controller
 			Log::info("cURL Error #:" . $err);
 			abort(500);
 		} else {
-			$response = json_decode($response);
 			if (!isset($response->id)) {
 				Log::info($responseStr);
 				abort(500);
@@ -121,6 +120,9 @@ class ZoomController extends Controller
 	 */
 	public static function getMeetingInfo(int $meetingId)
 	{
+		if($meetingId == null){
+			return null;
+		}
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => "https://api.zoom.us/v2/meetings/" . $meetingId,
@@ -142,7 +144,14 @@ class ZoomController extends Controller
 			Log::info("cURL Error #:" . $err);
 			abort(500);
 		} else {
-			return json_decode($response);
+			$response = json_decode($response, true);
+			if(array_key_exists('id', $response)){
+				return $response;
+			}else{
+				Log::info($response);
+				abort(500);
+			}
+				
 		}
 	}
 
@@ -205,9 +214,7 @@ class ZoomController extends Controller
 				),
 			));
 
-			$response = curl_exec($curl);
-			Log::info($response);
-			$response = json_decode($response);
+			$response = json_decode(curl_exec($curl));
 			$err = curl_error($curl);
 
 			if ($err) {
@@ -253,7 +260,6 @@ class ZoomController extends Controller
 			curl_close($curl);
 			return $meetings;
 		});
-
 		$meetings = new LengthAwarePaginator($meetings->forPage($page, 15), $meetings->count(), 15, $page);
 
 		$meetingsArray = [];

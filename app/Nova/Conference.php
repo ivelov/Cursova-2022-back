@@ -4,6 +4,8 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Ivelovvm\Gmap\Gmap;
+use Whitecube\NovaGoogleMaps\GoogleMaps;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
@@ -55,26 +57,6 @@ class Conference extends Resource
             Country::make('Country')
                 ->sortable()
                 ->rules('required'),
-
-            Number::make('Latitude')
-                ->rules('max:90', 'min:-90')
-                ->nullable()
-                ->hideFromIndex()
-                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    if(is_nan(floatval($model->{$attribute}))){
-                        $model->{$attribute} = 0;
-                    }
-                }),
-                
-            Number::make('Longitude')
-                ->rules('max:180', 'min:-180')
-                ->nullable()
-                ->hideFromIndex()
-                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-                    if(is_nan(floatval($model->{$attribute}))){
-                        $model->{$attribute} = 0;
-                    }
-                }),
             
             BelongsTo::make('User')
                 ->rules('required'),
@@ -101,12 +83,12 @@ class Conference extends Resource
             DateTime::make('Updated At')
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
+
+            Gmap::make('Position')
+                ->resolveUsing(function () {
+                    return json_encode(['lat' => $this->latitude, 'lng' => $this->longitude]);
+                }),
         ];
-    }
-
-    protected static function afterValidation(NovaRequest $request, $validator)
-    {
-
     }
 
     /**
