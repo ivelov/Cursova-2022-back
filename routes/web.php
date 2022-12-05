@@ -83,3 +83,8 @@ Route::post('/export/report/{id}/comments', 'ExportController@exportComments');
 
 //ZoomController
 Route::get('/meetings/{page?}', 'ZoomController@index');
+
+
+//CashierController
+Route::post('/cashier/subscribe', 'CashierController@subscribe');
+Route::get('/cashier/intent', 'CashierController@getIntent');

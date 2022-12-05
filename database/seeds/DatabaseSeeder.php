@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        User::create([
             'firstname' => 'admin',
             'lastname' => 'admin',
             'role' => 'admin',
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@groupbwt.com',
             'password' => Hash::make('12345678'),
         ]);
-        DB::table('users')->insert([
+        $user = User::create([
             'firstname' => '1',
             'lastname' => '1',
             'role' => 'listener',
@@ -33,7 +33,8 @@ class DatabaseSeeder extends Seeder
             'email' => '1@1.com',
             'password' => Hash::make('111111'),
         ]);
-        DB::table('users')->insert([
+        $user->createAsStripeCustomer();
+        $user = User::create([
             'firstname' => '2',
             'lastname' => '2',
             'role' => 'announcer',
@@ -43,5 +44,6 @@ class DatabaseSeeder extends Seeder
             'email' => '2@2.com',
             'password' => Hash::make('222222'),
         ]);
+        $user->createAsStripeCustomer();
     }
 }
