@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('111111'),
         ]);
         $user->createAsStripeCustomer();
+        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
         $user = User::create([
             'firstname' => '2',
             'lastname' => '2',
@@ -45,5 +46,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('222222'),
         ]);
         $user->createAsStripeCustomer();
+        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
     }
 }

@@ -78,6 +78,8 @@ class UserController extends Controller
             'phone' => $request->phone,
         ]);
         Auth::login($user);
+        $user->createAsStripeCustomer();
+        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
         return true;
     }
 

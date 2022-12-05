@@ -46,8 +46,6 @@ class CashierController extends Controller
                     }else{
                         //If old plan is cheaper
                         $user->subscription('default')->swapAndInvoice($planId);
-                        /*$user->subscription('default')->cancelNow();
-                        $user->newSubscription('default', $planId)->add();//swapAndInvoice doesn`t work(*/
                     }
                     
                 }else{
@@ -90,9 +88,8 @@ class CashierController extends Controller
             abort(401);
         }
         if($user->role === 'admin'){
-            abort(400,'Admin is not allowed');
+            abort(401,'Admin is not allowed');
         }
-        $user->createOrGetStripeCustomer();
     }
 
 }
