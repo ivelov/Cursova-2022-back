@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@groupbwt.com',
             'password' => Hash::make('12345678'),
         ]);
-        $user = User::create([
+        User::create([
             'firstname' => '1',
             'lastname' => '1',
             'role' => 'listener',
@@ -33,9 +33,7 @@ class DatabaseSeeder extends Seeder
             'email' => '1@1.com',
             'password' => Hash::make('111111'),
         ]);
-        $user->createAsStripeCustomer();
-        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
-        $user = User::create([
+       User::create([
             'firstname' => '2',
             'lastname' => '2',
             'role' => 'announcer',
@@ -45,7 +43,5 @@ class DatabaseSeeder extends Seeder
             'email' => '2@2.com',
             'password' => Hash::make('222222'),
         ]);
-        $user->createAsStripeCustomer();
-        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
     }
 }
