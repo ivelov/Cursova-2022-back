@@ -21,39 +21,35 @@ class CashierController extends Controller
         }
         
         $plans = [
-            env('STANDART_PRICE_ID') => 'standart',
-            env('SILVER_PRICE_ID') => 'silver',
-            env('GOLDEN_PRICE_ID') => 'golden',
-            env('PLATINUM_PRICE_ID') => 'platinum',
+            env('STANDART_PRICE_ID') => ['name'=>'standart', 'maxJoins'=>1],
+            env('SILVER_PRICE_ID') => ['name'=>'silver', 'maxJoins'=>5],
+            env('GOLDEN_PRICE_ID') => ['name'=>'golden', 'maxJoins'=>50],
+            env('PLATINUM_PRICE_ID') => ['name'=>'platinum', 'maxJoins'=>-1],
         ];
 
-        $newPlan = 0;
-        foreach ($plans as $planId => $planName) {
-            if($request->plan == $planName){
-                if ($user->subscribed('default')) {
+        $newPlanCounter = 0;
+        foreach ($plans as $planId => $plan) {
+            if($request->plan == $plan['name']){
 
-                    $oldPlan = 0;
-                    foreach ($plans as $oldPlanId => $oldPlanName) {
-                        if($user->subscribedToPlan($oldPlanId, 'default')){
-                            break;
-                        }
-                        $oldPlan++;
+                $oldPlanCounter = 0;
+                foreach ($plans as $oldPlanId => $oldPlan) {
+                    if($user->subscribedToPlan($oldPlanId, 'default')){
+                        break;
                     }
-                    if($oldPlan > $newPlan){
-                        $user->subscription('default')->swap($planId);
-                    }else if($oldPlan == $newPlan){
-                        return response("User already on this plan", 400);
-                    }else{
-                        //If old plan is cheaper
-                        $user->subscription('default')->swapAndInvoice($planId);
-                    }
-                    
+                    $oldPlanCounter++;
+                }
+
+                if($oldPlanCounter > $newPlanCounter){
+                    $user->subscription('default')->swap($planId);
+                }else if($oldPlanCounter == $newPlanCounter){
+                    return response("User already on this plan", 400);
                 }else{
-                    $user->newSubscription('default', $planId)->add();
+                    //If old plan is cheaper
+                    $user->subscription('default')->swapAndInvoice($planId);
                 }
                 return;
             }
-            $newPlan++;
+            $newPlanCounter++;
         }
     }
 
@@ -65,22 +61,31 @@ class CashierController extends Controller
         return $intent;
     }
 
-    public function getPlan(){
+    public function getPlanInfo(){
         $user = Auth::user();
-        $this->userCheck($user);
+        if(!$user){
+            abort(401);
+        }
+        if($user->role === 'admin'){
+            return json_encode(['admin'=>true]);
+        }
+        
 
+        
         $plans = [
-            env('STANDART_PRICE_ID') => 'standart',
-            env('SILVER_PRICE_ID') => 'silver',
-            env('GOLDEN_PRICE_ID') => 'golden',
-            env('PLATINUM_PRICE_ID') => 'platinum',
+            env('STANDART_PRICE_ID') => ['name'=>'standart', 'maxJoins'=>1],
+            env('SILVER_PRICE_ID') => ['name'=>'silver', 'maxJoins'=>5],
+            env('GOLDEN_PRICE_ID') => ['name'=>'golden', 'maxJoins'=>50],
+            env('PLATINUM_PRICE_ID') => ['name'=>'platinum', 'maxJoins'=>-1],
         ];
-        foreach ($plans as $planId => $planName) {
+        foreach ($plans as $planId => $plan) {
             if($user->subscribedToPlan($planId, 'default')){
-                return $planName;
+                return json_encode(['name'=>$plan['name'], 'availableJoins'=> $plan['maxJoins'] - UserController::getJoins($user, $plan['maxJoins'])]);
             }
         }
-        abort(401,'User not subscribed');
+        Log::info('Unsubscribed user:'.$user->id);
+        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
+        return json_encode(['name'=>'standart', 'availableJoins'=> UserController::getJoins($user, 1)]);
     }
 
     public function userCheck(\Illuminate\Contracts\Auth\Authenticatable $user){

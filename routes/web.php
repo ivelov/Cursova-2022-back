@@ -88,4 +88,4 @@ Route::get('/meetings/{page?}', 'ZoomController@index');
 //CashierController
 Route::post('/cashier/subscribe', 'CashierController@subscribe');
 Route::get('/cashier/intent', 'CashierController@getIntent');
-Route::get('/cashier/plan', 'CashierController@getPlan');
+Route::get('/cashier/plan', 'CashierController@getPlanInfo');
