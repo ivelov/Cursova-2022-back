@@ -51,6 +51,9 @@ class CashierController extends Controller
             }
             $newPlanCounter++;
         }
+        if(!$request->plan){
+            return response("Enter valid plan", 400);
+        }
     }
 
     public function getIntent(){
