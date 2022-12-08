@@ -23,12 +23,12 @@ class CreateUsersTable extends Migration
             $table->string('country');
             $table->string('phone');
             $table->string('email')->unique();
-            //$table->rememberToken();
+            $table->integer('joins')->default(1);
+            $table->date('joins_updated_at')->default('2000-01-01');
             $table->timestamps();
-            
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

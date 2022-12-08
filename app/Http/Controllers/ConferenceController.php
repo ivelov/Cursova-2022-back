@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Conferences;
 use App\Models\Listener;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -353,6 +354,8 @@ class ConferenceController extends Controller
         ]) ? true : false;
         if ($result) {
             MailController::newListener($user, $conferenceId);
+            $user->joins++;
+            $user->save();
             return true;
         } else {
             return false;
@@ -371,6 +374,8 @@ class ConferenceController extends Controller
             abort(403);
         }
 
+        $user->joins--;
+        $user->save();
         return Listener::where('conference_id', $conferenceId)->where('user_id', $user->id)->delete();
     }
 }

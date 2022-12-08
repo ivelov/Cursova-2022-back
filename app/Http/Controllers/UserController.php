@@ -78,6 +78,8 @@ class UserController extends Controller
             'phone' => $request->phone,
         ]);
         Auth::login($user);
+        $user->createAsStripeCustomer();
+        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
         return true;
     }
 
@@ -281,13 +283,23 @@ class UserController extends Controller
         return json_encode($perks);
     }
 
-     /**
-     * Determines user privileges 
-     *
-     * @return Object
-     */
     public function index()
     {
         return view('login');
+    }
+
+    /**
+     * Refreshes and returns user joins count
+     *
+     * @return int
+     */
+    public static function getJoins(User $user, $maxJoins)
+    {
+        if(date('Y-m', strtotime($user->joins_updated_at)) < date('Y-m')){
+            $user->joins = $maxJoins;
+            $user->joins_updated_at = date('Y-m-d');
+            $user->save();
+        }
+        return $user->joins;
     }
 }

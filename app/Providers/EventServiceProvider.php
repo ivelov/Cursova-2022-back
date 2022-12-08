@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Report;
+use App\Models\User;
 use App\Observers\CategoryObserver;
 use App\Observers\ReportObserver;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -38,5 +40,6 @@ class EventServiceProvider extends ServiceProvider
 
         Category::observe(CategoryObserver::class);
         Report::observe(ReportObserver::class);
+        User::observe(UserObserver::class);
     }
 }

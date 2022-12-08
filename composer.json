@@ -16,6 +16,7 @@
         "ivelovvm/gmap": "*",
         "ivelovvm/meetings": "*",
         "laraning/nova-time-field": "^1.2",
+        "laravel/cashier": "*",
         "laravel/framework": "^7.29",
         "laravel/nova": "3.*",
         "laravel/sanctum": "*",

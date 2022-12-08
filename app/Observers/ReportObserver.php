@@ -29,6 +29,12 @@ class ReportObserver
             Log::info('Trying to delete presentation');
             Storage::disk('public')->delete($report->presentation);
         }
+        $conference = Conferences::findOrFail($report->conference_id);
+        if(strtotime($conference->date .' '. $report->end_time) > time()){
+            $user = User::findOrFail($report->user_id);
+            $user->joins--;
+            $user->save();
+        }
     }
 
     public function creating(Report $report)
@@ -42,6 +48,13 @@ class ReportObserver
             $report->meeting_id = $meetingId;
         }
         
+    }
+    
+    public function created(Report $report)
+    {
+        $user = User::findOrFail($report->user_id);
+        $user->joins++;
+        $user->save();
     }
 
     public function updating(Report $report)
