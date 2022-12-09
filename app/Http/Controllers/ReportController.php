@@ -376,12 +376,15 @@ class ReportController extends Controller
     /**
      * Add report to db
      *
-     * @return bool
+     * @return int id
      */
     public function create(ReportRequest $request)
     {
         $user = Auth::user();
         if (!$user) {
+            abort(403);
+        }
+        if ($user->role == 'listener') {
             abort(403);
         }
 
@@ -422,7 +425,7 @@ class ReportController extends Controller
         }
 
         MailController::newAnnouncer($user, $res->id, $res->conference_id);
-        return true;
+        return $res->id;
     }
 
     /**

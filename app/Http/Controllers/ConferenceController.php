@@ -230,9 +230,13 @@ class ConferenceController extends Controller
             abort(403);
         }
 
+        if(Conferences::where('id',$conferenceId)->count() == 0){
+            abort(400, 'Conference not exist');
+        }
+
         MailController::conferenceDeleted($conferenceId);
 
-        return Conferences::where('id', $conferenceId)->delete();;
+        return Conferences::where('id', $conferenceId)->delete();
     }
 
     /**
@@ -270,7 +274,7 @@ class ConferenceController extends Controller
             abort(403);
         }
 
-        Conferences::create([
+        $conference = Conferences::create([
             'title' => $request->title,
             'country' => $request->country,
             'latitude' => $request->latitude,
@@ -280,7 +284,7 @@ class ConferenceController extends Controller
             'user_id' => Auth::user()->id,
             'category_id' => $request->categoryId,
         ]);
-        return true;
+        return json_encode(['id' => $conference->id]);
     }
 
     /**
@@ -345,6 +349,9 @@ class ConferenceController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
+            abort(401);
+        }
+        if ($user->role == 'announcer') {
             abort(403);
         }
 

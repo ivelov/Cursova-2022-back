@@ -10,7 +10,7 @@ class CashierController extends Controller
 {
     public function subscribe(Request $request){
         if(!$request->plan){
-            return response("Plan is required", 400);
+            return response("Plan is required", 422);
         }
  
         $user = Auth::user();
@@ -18,6 +18,8 @@ class CashierController extends Controller
 
         if($request->payment){
             $user->updateDefaultPaymentMethod($request->payment);
+        }else if($request->plan != 'standart'){
+            return response("Payment is required for non standart plan", 422);
         }
         
         $plans = [
@@ -42,7 +44,7 @@ class CashierController extends Controller
                 if($oldPlanCounter > $newPlanCounter){
                     $user->subscription('default')->swap($planId);
                 }else if($oldPlanCounter == $newPlanCounter){
-                    return response("User already on this plan", 400);
+                    return response("User already on this plan", 422);
                 }else{
                     //If old plan is cheaper
                     $user->subscription('default')->swapAndInvoice($planId);
@@ -52,7 +54,7 @@ class CashierController extends Controller
             $newPlanCounter++;
         }
         if(!$request->plan){
-            return response("Enter valid plan", 400);
+            return response("Enter valid plan", 422);
         }
     }
 

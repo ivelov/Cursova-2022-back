@@ -77,9 +77,12 @@ class UserController extends Controller
             'country' => $request->country,
             'phone' => $request->phone,
         ]);
+        if(!$user){
+            abort(500);
+        }
         Auth::login($user);
-        $user->createAsStripeCustomer();
-        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
+        $user->createOrGetStripeCustomer();
+        //$user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
         return true;
     }
 
@@ -188,6 +191,8 @@ class UserController extends Controller
         if (!$user) {
             abort(403);
         }
+        Log::info($user->id);
+        Log::info($user->email);
 
         if (!Hash::check($request->currentPassword, $user->password)) {
             throw ValidationException::withMessages([
