@@ -44,7 +44,6 @@ class UserController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'admin'])) {
             $request->session()->regenerate();
-            Log::info(Auth::user()->role);
             return redirect('/nova/');
         }
         throw ValidationException::withMessages([
@@ -191,8 +190,6 @@ class UserController extends Controller
         if (!$user) {
             abort(403);
         }
-        Log::info($user->id);
-        Log::info($user->email);
 
         if (!Hash::check($request->currentPassword, $user->password)) {
             throw ValidationException::withMessages([

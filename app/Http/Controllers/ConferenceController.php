@@ -365,7 +365,7 @@ class ConferenceController extends Controller
             $user->save();
             return true;
         } else {
-            return false;
+            abort(500);
         }
     }
 

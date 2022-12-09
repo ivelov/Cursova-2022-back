@@ -13,6 +13,7 @@ use App\Mail\MailReportTimeChange;
 use App\Models\Conferences;
 use App\Models\Report;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class MailController extends Controller
 {
@@ -34,6 +35,7 @@ class MailController extends Controller
             ->get();
 
         if ($announcers->count() == 0) {
+            Log::info('zero');
             return;
         }
 

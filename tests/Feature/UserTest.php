@@ -12,7 +12,7 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
-    
+    /*
     public function testRegister()
     {
         $response = $this->json('POST', '/register', [
@@ -30,7 +30,7 @@ class UserTest extends TestCase
         $this->accountUpdate();
         //$this->login();
         $this->planChange();
-    }
+    }*/
 
     /*public function login()
     {
