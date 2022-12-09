@@ -35,7 +35,6 @@ class MailController extends Controller
             ->get();
 
         if ($announcers->count() == 0) {
-            Log::info('zero');
             return;
         }
 
