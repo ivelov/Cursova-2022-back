@@ -16,7 +16,7 @@ class ReportTest extends TestCase
     use RefreshDatabase, WithoutMiddleware;
 
     protected $userAnnouncer, $userListener, $userAdmin;
-
+/*
     public function testCreate()
     {       
         $this->userAnnouncer = User::create([
@@ -87,7 +87,7 @@ class ReportTest extends TestCase
         $this->favorite();
         $this->deleteReport();
     }
-
+*/
     public function deleteReport()
     {
         //As wrong user
