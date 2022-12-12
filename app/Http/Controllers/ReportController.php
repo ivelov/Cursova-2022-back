@@ -477,8 +477,7 @@ class ReportController extends Controller
         $reports = Report::select('reports.id', 'reports.title')
             ->join('conferences', 'conferences.id', '=', 'reports.conference_id')
             ->where('conferences.date', '>=', date('Y-m-d'))
-            ->where('end_time', '>=', date('H:i:s', time() + env('TIMEZONE_DIFF_SECONDS', 0)))
-            ->where('reports.title', 'like', '%' . $request->searchText . '%')
+            ->where('reports.title', 'like', "%" . $request->searchText . "%")
             ->get();
         foreach ($reports as $key => $report) {
             $reports[$key]['path'] = '/report/' . $report->id;

@@ -140,7 +140,42 @@ class ConferenceTest extends TestCase
         $response = $this->actingAs($user)->json('POST', "/conference/$conference->id/join");
         $response->assertStatus(200);
     }
-/*
+
+    public function testSearch()
+    {
+        $user = User::create([
+            'firstname' => '2',
+            'lastname' => '2',
+            'password' => '333333',
+            'email' => '1@1.com',
+            'birthdate' => '2020-08-01',
+            'country' => 'usa',
+            'phone' => '+380551111111',
+            'role' => 'admin',
+        ]);
+
+        Conferences::create([
+            'title' => '1',
+            'country' => 'usa',
+            'latitude' => '0',
+            'longitude' => '0',
+            'date' => date('Y-m-d'),
+            'time' => '8:00:00',
+            'user_id' => $user->id,
+            'category_id' => null
+        ]);
+
+        $response = $this->json('POST', "/conferencesFind", ['searchText' => '1']);
+        $response->assertStatus(200)->assertJson([
+            [
+                'title' => '1',
+            ],
+        ]);
+
+        $response = $this->json('POST', "/conferencesFind", ['searchText' => '22']);
+        $response->assertStatus(200)->assertExactJson([ ]);
+    }
+
     public function testFilter()
     {
         $user = User::create([
@@ -191,5 +226,5 @@ class ConferenceTest extends TestCase
                 'participant' => false,
             ]],
         ]);
-    }*/
+    }
 }

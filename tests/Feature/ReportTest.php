@@ -55,14 +55,14 @@ class ReportTest extends TestCase
             'country' => 'usa',
             'latitude' => '0',
             'longitude' => '0',
-            'date' => date('Y-m-d'),
+            'date' => date('Y-m-d', time()+86400),
             'time' => '8:00:00',
             'user_id' => 1
         ]);
 
         $data = [
             'report' => json_encode([
-                'title' => 'title',
+                'title' => '1',
                 'description' => 'description',
                 'startTime' => '8:00',
                 'endTime' => '9:00',
@@ -86,9 +86,10 @@ class ReportTest extends TestCase
         
         $this->updateReport();
         $this->favorite();
+        $this->searchReport();
         $this->deleteReport();
-    }
-*/
+    }*/
+
     public function deleteReport()
     {
         //As wrong user
@@ -169,7 +170,20 @@ class ReportTest extends TestCase
         $response->assertStatus(404);
         
     }
+    
+    public function searchReport()
+    {
+        $response = $this->json('POST', "/reportsFind", ['searchText' => '1']);
+        $response->assertStatus(200)->assertJson([
+            [
+                'title' => '1',
+            ],
+        ]);
 
+        $response = $this->json('POST', "/reportsFind", ['searchText' => 'vxcx']);
+        $response->assertStatus(200)->assertExactJson([ ]);
+    }
+/*
     public function testFilter()
     {
         $user = User::create([
@@ -236,5 +250,5 @@ class ReportTest extends TestCase
                 'endTime' => '10:00:00',
             ]],
         ]);
-    }
+    }*/
 }
