@@ -180,7 +180,7 @@ class UserController extends Controller
     }
 
     /**
-     * Determines if user can add conference
+     * Updates user
      *
      * @return bool
      */

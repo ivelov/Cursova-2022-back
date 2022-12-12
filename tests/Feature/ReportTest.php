@@ -16,10 +16,40 @@ class ReportTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
 
-    protected $userAnnouncer, $userListener, $userAdmin;
-    /*
-    public function testCreate()
-    {       
+    protected $userAnnouncer, $userListener, $userAdmin, $reportId;
+
+    protected function getReportId(){
+        if($this->reportId){
+            return $this->reportId;
+        }
+
+        $conference = Conferences::create([
+            'title' => '1',
+            'country' => 'usa',
+            'latitude' => '0',
+            'longitude' => '0',
+            'date' => date('Y-m-d'),
+            'time' => '8:00:00',
+            'user_id' => $this->userAnnouncer->id,
+            'category_id' => null
+        ]);
+        $this->reportId = Report::create([
+            'title' => 'title',
+            'description' => 'description',
+            'start_time' => '8:00',
+            'end_time' => '9:00',
+            'conference_id' => $conference->id,
+            'category_id' => null,
+            'presentation' => null,
+            'user_id' => $this->userAnnouncer->id,
+            'meeting_id' => null,
+        ])->id;
+        
+        return $this->reportId;
+    }
+
+    protected function createUsers()
+    {
         $this->userAnnouncer = User::create([
             'firstname' => '2',
             'lastname' => '2',
@@ -50,6 +80,14 @@ class ReportTest extends TestCase
             'phone' => '+380551111111',
             'role' => 'admin',
         ]);
+    }
+
+    public function testCreate()
+    {       
+        if(!$this->userAnnouncer){
+            $this->createUsers();
+        }
+
         $conference = Conferences::create([
             'title' => '1',
             'country' => 'usa',
@@ -57,7 +95,7 @@ class ReportTest extends TestCase
             'longitude' => '0',
             'date' => date('Y-m-d', time()+86400),
             'time' => '8:00:00',
-            'user_id' => 1
+            'user_id' => $this->userAnnouncer->id
         ]);
 
         $data = [
@@ -84,30 +122,66 @@ class ReportTest extends TestCase
         $response = $this->actingAs($this->userAnnouncer)->json('POST', "addReport", $data);
         $response->assertStatus(200);
         
-        $this->updateReport();
+       /* $this->updateReport();
         $this->favorite();
-        $this->searchReport();
-        $this->deleteReport();
-    }*/
+        $this->searchReport();*/
+    }
 
-    public function deleteReport()
+    public function testDelete()
     {
+        if(!$this->userAnnouncer){
+            $this->createUsers();
+        }
+        $conference = Conferences::create([
+            'title' => '1',
+            'country' => 'usa',
+            'latitude' => '0',
+            'longitude' => '0',
+            'date' => date('Y-m-d'),
+            'time' => '8:00:00',
+            'user_id' => $this->userAnnouncer->id,
+            'category_id' => null
+        ]);
+        $reportId = Report::create([
+            'title' => 'title',
+            'description' => 'description',
+            'start_time' => '8:00',
+            'end_time' => '9:00',
+            'conference_id' => $conference->id,
+            'category_id' => null,
+            'presentation' => null,
+            'user_id' => $this->userAnnouncer->id,
+            'meeting_id' => null,
+        ])->id;
+
         //As wrong user
-        $response = $this->actingAs($this->userListener)->json('POST', "/reports/delete/1", ['reportId'=>1]);
+        $response = $this->actingAs($this->userListener)->json('POST', "/reports/delete/$conference->id", ['reportId'=>$reportId]);
         $response->assertStatus(403);
 
         //As right user
-        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/reports/delete/1", ['reportId'=>1]);
+        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/reports/delete/$conference->id", ['reportId'=>$reportId]);
         $response->assertStatus(200);
                 
         //With wrong id
-        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/reports/delete/1", ['reportId'=>1]);
+        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/reports/delete/$conference->id", ['reportId'=>50]);
         $response->assertStatus(404);
 
         Bus::fake();
 
+        $reportId = Report::create([
+            'title' => 'title',
+            'description' => 'description',
+            'start_time' => '8:00',
+            'end_time' => '9:00',
+            'conference_id' => $conference->id,
+            'category_id' => null,
+            'presentation' => null,
+            'user_id' => $this->userAnnouncer->id,
+            'meeting_id' => null,
+        ])->id;
+
         //As admin
-        $response = $this->actingAs($this->userAdmin)->json('POST', "/reports/delete/1", ['reportId'=>2]);
+        $response = $this->actingAs($this->userAdmin)->json('POST', "/reports/delete/$conference->id", ['reportId'=>$reportId]);
         $response->assertStatus(200);
 
         Bus::assertDispatched(function (MailJob $job){
@@ -117,6 +191,12 @@ class ReportTest extends TestCase
 
     public function updateReport()
     {
+        if(!$this->userAnnouncer){
+            $this->createUsers();
+        }
+
+        $reportId = $this->getReportId();
+
         $data = [
             'report' => json_encode([
                 'title' => 'title2',
@@ -129,50 +209,57 @@ class ReportTest extends TestCase
         ];
 
         //As wrong user
-        $response = $this->actingAs($this->userListener)->json('POST', "/report/1/save", $data);
+        $response = $this->actingAs($this->userListener)->json('POST', "/report/$reportId/save", $data);
         $response->assertStatus(403);
 
         //As right user
-        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/report/1/save", $data);
+        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/report/$reportId/save", $data);
         $response->assertStatus(200);
                 
         //As admin
-        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/1/save", $data);
+        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/$reportId/save", $data);
         $response->assertStatus(200);
 
         //With wrong id
-        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/3/save", $data);
+        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/50/save", $data);
         $response->assertStatus(404);
     }
 
-    public function favorite()
+    public function testFavorite()
     {
+        if(!$this->userAnnouncer){
+            $this->createUsers();
+        }
+        $reportId = $this->getReportId();
+
         //As listener
-        $response = $this->actingAs($this->userListener)->json('POST', "/report/1/favorite");
+        $response = $this->actingAs($this->userListener)->json('POST', "/report/$reportId/favorite");
         $response->assertStatus(201);
-        $response = $this->actingAs($this->userListener)->json('POST', "/report/1/unfavorite");
+        $response = $this->actingAs($this->userListener)->json('POST', "/report/$reportId/unfavorite");
         $response->assertStatus(200);
 
         //As announcer
-        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/report/1/favorite");
+        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/report/$reportId/favorite");
         $response->assertStatus(201);
-        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/report/1/unfavorite");
+        $response = $this->actingAs($this->userAnnouncer)->json('POST', "/report/$reportId/unfavorite");
         $response->assertStatus(200);
 
         //As admin
-        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/1/favorite");
+        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/$reportId/favorite");
         $response->assertStatus(201);
-        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/1/unfavorite");
+        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/$reportId/unfavorite");
         $response->assertStatus(200);
 
         //With wrong id
-        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/3/favorite");
+        $response = $this->actingAs($this->userAdmin)->json('POST', "/report/50/favorite");
         $response->assertStatus(404);
         
     }
     
     public function searchReport()
     {
+        $this->getReportId();
+
         $response = $this->json('POST', "/reportsFind", ['searchText' => '1']);
         $response->assertStatus(200)->assertJson([
             [
@@ -183,7 +270,7 @@ class ReportTest extends TestCase
         $response = $this->json('POST', "/reportsFind", ['searchText' => 'vxcx']);
         $response->assertStatus(200)->assertExactJson([ ]);
     }
-/*
+
     public function testFilter()
     {
         $user = User::create([
@@ -208,7 +295,7 @@ class ReportTest extends TestCase
             'category_id' => null
         ]);
 
-        Report::create([
+        $reportId1 = Report::create([
             'title' => '1',
             'description' => 'description',
             'start_time' => '8:00',
@@ -218,8 +305,8 @@ class ReportTest extends TestCase
             'presentation' => null,
             'user_id' => $user->id,
             'meeting_id' => null,
-        ]);
-        Report::create([
+        ])->id;
+        $reportId2 = Report::create([
             'title' => '2',
             'description' => 'description',
             'start_time' => '9:00',
@@ -229,12 +316,12 @@ class ReportTest extends TestCase
             'presentation' => null,
             'user_id' => $user->id,
             'meeting_id' => null,
-        ]);
+        ])->id;
 
         $response = $this->actingAs($user)->json('POST', "/reports/1", ['endTime' => '09:00']);
         $response->assertStatus(200)->assertJson([
             'reports' => [[
-                'id' => 1,
+                'id' =>  $reportId1,
                 'title' => '1',
                 'startTime' => '08:00:00',
                 'endTime' => '09:00:00',
@@ -244,11 +331,11 @@ class ReportTest extends TestCase
         $response = $this->actingAs($user)->json('POST', "/reports/1", ['startTime' => '09:00']);
         $response->assertStatus(200)->assertJson([
             'reports' => [[
-                'id' => 2,
+                'id' =>  $reportId2,
                 'title' => '2',
                 'startTime' => '09:00:00',
                 'endTime' => '10:00:00',
             ]],
         ]);
-    }*/
+    }
 }

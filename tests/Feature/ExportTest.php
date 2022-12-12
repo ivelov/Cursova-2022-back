@@ -43,8 +43,8 @@ class ExportTest extends TestCase
             'user_id' => $user->id,
             'category_id' => null
         ];
-        Conferences::create($conferenceData);
-        Conferences::create($conferenceData);
+        $conference = Conferences::create($conferenceData);
+        
 
         Bus::fake();
 
@@ -53,37 +53,37 @@ class ExportTest extends TestCase
         Bus::assertDispatched(ExportConferencesJob::class);
 
 
-        Report::create([
+        $report = Report::create([
             'title' => 'title',
             'description' => 'description',
             'start_time' => '8:00',
             'end_time' => '9:00',
-            'conference_id' => 1,
+            'conference_id' => $conference->id,
             'category_id' => null,
             'presentation' => null,
             'user_id' => $user->id,
             'meeting_id' => null,
         ]);
-        $response = $this->actingAs($user)->json('POST', "/export/conference/1/reports");
+        $response = $this->actingAs($user)->json('POST', "/export/conference/$conference->id/reports");
         $response->assertStatus(200);
         Bus::assertDispatched(ExportReportsJob::class);
 
 
         Listener::create([
-            'user_id' => 1,
-            'conference_id' => 1
+            'user_id' => $user->id,
+            'conference_id' => $conference->id
         ]);
-        $response = $this->actingAs($user)->json('POST', "/export/conference/1/listeners");
+        $response = $this->actingAs($user)->json('POST', "/export/conference/$conference->id/listeners");
         $response->assertStatus(200);
         Bus::assertDispatched(ExportListenersJob::class);
 
 
         Comment::create([
-            'user_id' => 1,
-            'report_id' => 1,
+            'user_id' => $user->id,
+            'report_id' => $report->id,
             'text' => 'tewxt',
         ]);
-        $response = $this->actingAs($user)->json('POST', "/export/report/1/comments");
+        $response = $this->actingAs($user)->json('POST', "/export/report/$report->id/comments");
         $response->assertStatus(200);
         Bus::assertDispatched(ExportCommentsJob::class);
     }

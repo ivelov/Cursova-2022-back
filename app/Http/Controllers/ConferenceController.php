@@ -231,7 +231,7 @@ class ConferenceController extends Controller
         }
 
         if(Conferences::where('id',$conferenceId)->count() == 0){
-            abort(400, 'Conference not exist');
+            abort(404, 'Conference not exist');
         }
 
         MailController::conferenceDeleted($conferenceId);

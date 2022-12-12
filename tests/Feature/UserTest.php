@@ -4,15 +4,15 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
-    /*
+    
     public function testRegister()
     {
         $response = $this->json('POST', '/register', [
@@ -26,26 +26,20 @@ class UserTest extends TestCase
             'role' => 'listener',
         ]);
         $response->assertStatus(200);
+    }
 
-        $this->accountUpdate();
-        //$this->login();
-        $this->planChange();
-    }*/
-
-    /*public function login()
+    public function testUpdate()
     {
-        $response = $this->json('POST', '/login', [
-            'password' => '333333',
+        $user = User::create([
+            'firstname' => '2',
+            'lastname' => '2',
+            'password' => Hash::make('333333'),
             'email' => '3@3.com',
+            'birthdate' => '2020-08-01',
+            'country' => 'usa',
+            'phone' => '+380551111111',
+            'role' => 'listener',
         ]);
-
-        $response->assertStatus(200);
-    }*/
-
-    public function accountUpdate()
-    {
-        $user = User::where('email','3@3.com')->firstOrFail();
-
         //With authorization
         $response = $this->actingAs($user)->json('POST', '/account/save', [
             'firstname' => '3',
@@ -75,22 +69,33 @@ class UserTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function planChange()
+    public function testPlanChange()
     {
+        $user = User::create([
+            'firstname' => '2',
+            'lastname' => '2',
+            'password' => '333333',
+            'email' => '3@3.com',
+            'birthdate' => '2020-08-01',
+            'country' => 'usa',
+            'phone' => '+380551111111',
+            'role' => 'listener',
+        ]);
+
         //Without payment
-        $response = $this->json('POST', '/cashier/subscribe', [
+        $response = $this->actingAs($user)->json('POST', '/cashier/subscribe', [
             'plan' => 'standart'
         ]);
 
         $response->assertStatus(422);
 
         //Without plan
-        $response = $this->json('POST', '/cashier/subscribe');
+        $response = $this->actingAs($user)->json('POST', '/cashier/subscribe');
 
         $response->assertStatus(422);
 
         //With not existing plan
-        $response = $this->json('POST', '/cashier/subscribe', [
+        $response = $this->actingAs($user)->json('POST', '/cashier/subscribe', [
             'plan' => 'standart2'
         ]);
 

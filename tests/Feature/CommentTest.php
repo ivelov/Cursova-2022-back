@@ -16,7 +16,7 @@ class CommentTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
     protected $userAnnouncer, $userListener, $userAdmin, $reportId;
-/*
+
     public function testCreate()
     {
         $this->userAnnouncer = User::create([
@@ -106,7 +106,7 @@ class CommentTest extends TestCase
 
         $this->updateComment();
     }
-*/
+
     public function updateComment()
     {
         $data=[
