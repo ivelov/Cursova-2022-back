@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Jobs\MailJob;
 use App\Mail\MailReportDeleted;
 use App\Models\Conferences;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -167,5 +168,73 @@ class ReportTest extends TestCase
         $response = $this->actingAs($this->userAdmin)->json('POST', "/report/3/favorite");
         $response->assertStatus(404);
         
+    }
+
+    public function testFilter()
+    {
+        $user = User::create([
+            'firstname' => '2',
+            'lastname' => '2',
+            'password' => '333333',
+            'email' => '1@1.com',
+            'birthdate' => '2020-08-01',
+            'country' => 'usa',
+            'phone' => '+380551111111',
+            'role' => 'announcer',
+        ]);
+
+        $conference = Conferences::create([
+            'title' => '1',
+            'country' => 'usa',
+            'latitude' => '0',
+            'longitude' => '0',
+            'date' => '2022-10-10',
+            'time' => '8:00:00',
+            'user_id' => $user->id,
+            'category_id' => null
+        ]);
+
+        Report::create([
+            'title' => '1',
+            'description' => 'description',
+            'start_time' => '8:00',
+            'end_time' => '9:00',
+            'conference_id' => $conference->id,
+            'category_id' => null,
+            'presentation' => null,
+            'user_id' => $user->id,
+            'meeting_id' => null,
+        ]);
+        Report::create([
+            'title' => '2',
+            'description' => 'description',
+            'start_time' => '9:00',
+            'end_time' => '10:00',
+            'conference_id' => $conference->id,
+            'category_id' => null,
+            'presentation' => null,
+            'user_id' => $user->id,
+            'meeting_id' => null,
+        ]);
+
+        $response = $this->actingAs($user)->json('POST', "/reports/1", ['endTime' => '09:00']);
+        $response->assertStatus(200)->assertJson([
+            'reports' => [[
+                'id' => 1,
+                'title' => '1',
+                'startTime' => '08:00:00',
+                'endTime' => '09:00:00',
+            ]],
+        ]);
+
+        $response = $this->actingAs($user)->json('POST', "/reports/1", ['startTime' => '09:00']);
+        $response->assertStatus(200)->assertJson([
+            'reports' => [[
+                'id' => 2,
+                'title' => '2',
+                'startTime' => '09:00:00',
+                'endTime' => '10:00:00',
+            ]],
+        ]);
     }
 }
