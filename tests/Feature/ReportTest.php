@@ -16,7 +16,7 @@ class ReportTest extends TestCase
     use RefreshDatabase, WithoutMiddleware;
 
     protected $userAnnouncer, $userListener, $userAdmin;
-/*
+    /*
     public function testCreate()
     {       
         $this->userAnnouncer = User::create([

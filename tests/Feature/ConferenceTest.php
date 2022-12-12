@@ -140,4 +140,56 @@ class ConferenceTest extends TestCase
         $response = $this->actingAs($user)->json('POST', "/conference/$conference->id/join");
         $response->assertStatus(200);
     }
+
+    public function testFilter()
+    {
+        $user = User::create([
+            'firstname' => '2',
+            'lastname' => '2',
+            'password' => '333333',
+            'email' => '1@1.com',
+            'birthdate' => '2020-08-01',
+            'country' => 'usa',
+            'phone' => '+380551111111',
+            'role' => 'announcer',
+        ]);
+        $data = [
+            'title' => '1',
+            'country' => 'usa',
+            'latitude' => '0',
+            'longitude' => '0',
+            'date' => date('Y-m-d'),
+            'time' => '8:00:00',
+            'user_id' => $user->id,
+            'category_id' => null
+        ];
+
+        Conferences::create($data);
+        $tomorrow = date('Y-m-d', time()+86400);
+        $data['date'] = $tomorrow;
+        $data['title'] = '2';
+        Conferences::create($data);
+
+        $response = $this->actingAs($user)->json('POST', "/conferences/1", ['endDate' => date('Y-m-d')]);
+        $response->assertStatus(200)->assertJson([
+            'conferences' => [[
+                'id' => 1,
+                'canEdit' => true,
+                'title' => '1',
+                'date' => date('Y-m-d'),
+                'participant' => false,
+            ]],
+        ]);
+
+        $response = $this->actingAs($user)->json('POST', "/conferences/1", ['startDate' => $tomorrow]);
+        $response->assertStatus(200)->assertJson([
+            'conferences' => [[
+                'id' => 2,
+                'canEdit' => true,
+                'title' => '2',
+                'date' => $tomorrow,
+                'participant' => false,
+            ]],
+        ]);
+    }
 }

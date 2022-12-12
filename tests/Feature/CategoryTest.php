@@ -11,7 +11,7 @@ class CategoryTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
     protected $userAnnouncer, $userListener, $userAdmin;
-
+/*
     public function testCreate()
     {
         $this->userAnnouncer = User::create([
@@ -62,7 +62,7 @@ class CategoryTest extends TestCase
         $this->updateCategory();
         $this->deleteCategory();
     }
-
+*/
     public function updateCategory()
     {
         //As wrong users

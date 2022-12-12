@@ -8,7 +8,6 @@ use App\Models\Conferences;
 use App\Models\Report;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
@@ -17,7 +16,7 @@ class CommentTest extends TestCase
 {
     use RefreshDatabase, WithoutMiddleware;
     protected $userAnnouncer, $userListener, $userAdmin, $reportId;
-
+/*
     public function testCreate()
     {
         $this->userAnnouncer = User::create([
@@ -107,7 +106,7 @@ class CommentTest extends TestCase
 
         $this->updateComment();
     }
-
+*/
     public function updateComment()
     {
         $data=[
