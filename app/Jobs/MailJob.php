@@ -14,7 +14,7 @@ class MailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected Mailable $mail;
+    public Mailable $mail;
     protected string $to;
 
 

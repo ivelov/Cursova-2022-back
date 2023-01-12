@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,7 @@ class CommentController extends Controller
      *
      * @return bool
      */
-    public function create(Request $request)
+    public function create(CommentRequest $request)
     {
         $user = Auth::user();
         if (!$user) {
@@ -73,9 +74,8 @@ class CommentController extends Controller
         ]);
         if ($res) {
             MailController::newComment($user, $request->reportId);
-            return true;
         } else {
-            return false;
+            abort(500);
         }
     }
     /**
@@ -85,15 +85,20 @@ class CommentController extends Controller
      */
     public function update(Request $request)
     {
-        if (!Auth::user()) {
+        $user = Auth::user();
+        if (!$user) {
             abort(403);
         }
+        if (!$request->text) {
+            abort(400);
+        }
 
-        $values = [
-            'text' => $request->text,
-        ];
-
-        return Comment::where('id', $request->id)->update($values);
+        $comment = Comment::findOrFail($request->id);
+        if ($user->id != $comment->user_id && $user-> role != 'admin') {
+            abort(403);
+        }
+        $comment->text = $request->text;
+        $comment->save();
     }
     /**
      * Determines if user can update selected comment

@@ -108,10 +108,17 @@ class CategoryController extends Controller
      */
     public function create(Request $request)
     {
-        if (!Auth::user()) {
+        $user = Auth::user();
+        if (!$user) {
             abort(403);
         }
-
+        if ($user->role != 'admin') {
+            abort(403);
+        }
+        if(!$request->title){
+            abort(400);
+        }
+        
         $values = [
             'title' => $request->title,
             'parent_id' => $request->parentId
@@ -127,15 +134,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (!Auth::user()) {
+        $user = Auth::user();
+        if (!$user) {
+            abort(403);
+        }
+        if ($user->role != 'admin') {
             abort(403);
         }
 
-        $values = [
-            'title' => $request->title,
-        ];
-
-        return Category::where('id', $id)->update($values) ? true : false;
+        $category = Category::findOrFail($id);
+        if($request->title){
+            $category->title = $request->title;
+            $category->save();
+        }else{
+            abort(400);
+        }
     }
 
     /**
@@ -145,10 +158,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        if (!Auth::user()) {
+        $user = Auth::user();
+        if (!$user) {
             abort(403);
         }
-        if (Category::where('id', $id)->first()->delete()) {
+        if ($user->role != 'admin') {
+            abort(403);
+        }
+
+        if (Category::findOrFail($id)->delete()) {
             return 'Deleted:$id';
         } else {
             abort(500);

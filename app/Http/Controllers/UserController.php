@@ -44,7 +44,6 @@ class UserController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'admin'])) {
             $request->session()->regenerate();
-            Log::info(Auth::user()->role);
             return redirect('/nova/');
         }
         throw ValidationException::withMessages([
@@ -77,9 +76,12 @@ class UserController extends Controller
             'country' => $request->country,
             'phone' => $request->phone,
         ]);
+        if(!$user){
+            abort(500);
+        }
         Auth::login($user);
-        $user->createAsStripeCustomer();
-        $user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
+        $user->createOrGetStripeCustomer();
+        //$user->newSubscription('default', env('STANDART_PRICE_ID'))->add();
         return true;
     }
 
@@ -178,7 +180,7 @@ class UserController extends Controller
     }
 
     /**
-     * Determines if user can add conference
+     * Updates user
      *
      * @return bool
      */

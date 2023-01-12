@@ -322,8 +322,13 @@ class ReportController extends Controller
         $report = null;
         if (isset($request->reportId)) {
             $report = Report::findOrFail($request->reportId);
+            if($user->role != 'admin'){
+                if($report->user_id != $user->id){
+                    abort(403);
+                }
+            }
         } else {
-            $report = Report::where('conference_id', $confId)->where('user_id', $user->id)->first();
+            $report = Report::where('conference_id', $confId)->where('user_id', $user->id)->firstOrFail();
         }
 
         $userId = $report->user_id;
@@ -332,7 +337,7 @@ class ReportController extends Controller
                 MailController::reportDeleted($userId, $confId);
             return true;
         } else {
-            return false;
+            abort(500);
         }
     }
 
@@ -341,10 +346,10 @@ class ReportController extends Controller
      *
      * @return int number of affected rows
      */
-    public function update(int $reportId, ReportRequest $request) //TODO create meeting
+    public function update(int $reportId, ReportRequest $request)
     {
         $user = Auth::user();
-        if (!$user || !UserController::canReportEdit(Auth::user(), $reportId)) {
+        if (!$user || !UserController::canReportEdit($user, $reportId)) {
             abort(403);
         }
 
@@ -376,12 +381,15 @@ class ReportController extends Controller
     /**
      * Add report to db
      *
-     * @return bool
+     * @return int id
      */
     public function create(ReportRequest $request)
     {
         $user = Auth::user();
         if (!$user) {
+            abort(403);
+        }
+        if ($user->role == 'listener') {
             abort(403);
         }
 
@@ -422,7 +430,7 @@ class ReportController extends Controller
         }
 
         MailController::newAnnouncer($user, $res->id, $res->conference_id);
-        return true;
+        return $res->id;
     }
 
     /**
@@ -436,7 +444,8 @@ class ReportController extends Controller
         if (!$user) {
             abort(403);
         }
-
+        
+        Report::findOrFail($reportId);
         return Favorites::create([
             'user_id' => $user->id,
             'report_id' => $reportId,
@@ -468,8 +477,7 @@ class ReportController extends Controller
         $reports = Report::select('reports.id', 'reports.title')
             ->join('conferences', 'conferences.id', '=', 'reports.conference_id')
             ->where('conferences.date', '>=', date('Y-m-d'))
-            ->where('end_time', '>=', date('H:i:s', time() + env('TIMEZONE_DIFF_SECONDS', 0)))
-            ->where('reports.title', 'like', '%' . $request->searchText . '%')
+            ->where('reports.title', 'like', "%" . $request->searchText . "%")
             ->get();
         foreach ($reports as $key => $report) {
             $reports[$key]['path'] = '/report/' . $report->id;
